@@ -1,0 +1,1578 @@
+<html class="a-fullscreen">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+    <title>
+      Super Duper Advanced Hello World WebXR FROZEN A-frame 1.1.9 Custom Version
+    </title>
+    <meta
+      name="description"
+      content="My Super Duper Advanced Hello World - a VR Template page for starting a WebXR VR project.  Includes what I call VRCore basic functionality built upon a custom FROZEN version of A-frame 1.1.9 created with Three.js r124 or simply hacked together by Michael McAnally, April 21, 2021.  The Reason: latest version of A-frame broke just too much of the community code I used and relied on to build with, in addition to the eight tutorial articles I wrote on Medium to help others learn.  Mostly it broke movement-controls/navmesh in aframe-extras; simply by including the move to Three.js r125, which in my humble opinion is deprecating way too quickly and aggresively to provide for a stable platform on which to code upon moving forward, see discussion: https://github.com/aframevr/aframe/issues/4806#issuecomment-804421940 and https://github.com/mrdoob/three.js/wiki/Migration-Guide#r124--r125 Although, all that said I do support A-frame and respect Three.js developers, so I bought a cool A-frame T-shirt https://cottonbureau.com/products/fragments#/6821945/tee-men-standard-tee-vintage-black-tri-blend-s"
+    />
+    <meta
+      name="viewport"
+      content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, shrink-to-fit=no"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="gray-translucent"
+    />
+    <meta aframe-injected="" name="theme-color" content="black" />
+    <script src="aframe-master.min.js"></script>
+    <style type="text/css" data-href="src\style\aframe.css">
+      html.a-fullscreen {
+        bottom: 0;
+        left: 0;
+        position: fixed;
+        right: 0;
+        top: 0;
+      }
+      html.a-fullscreen body {
+        height: 100%;
+        margin: 0;
+        overflow: hidden;
+        padding: 0;
+        width: 100%;
+      }
+      html.a-fullscreen .a-canvas {
+        width: 100% !important;
+        height: 100% !important;
+        top: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        position: fixed !important;
+      }
+      html:not(.a-fullscreen) .a-enter-ar,
+      html:not(.a-fullscreen) .a-enter-vr {
+        right: 5px;
+        bottom: 5px;
+      }
+      :-webkit-full-screen {
+        background-color: transparent;
+      }
+      .a-hidden {
+        display: none !important;
+      }
+      .a-canvas {
+        height: 100%;
+        left: 0;
+        position: absolute;
+        top: 0;
+        width: 100%;
+      }
+      .a-canvas.a-grab-cursor:hover {
+        cursor: grab;
+        cursor: -moz-grab;
+        cursor: -webkit-grab;
+      }
+      canvas.a-canvas.a-mouse-cursor-hover:hover {
+        cursor: pointer;
+      }
+      .a-inspector-loader {
+        background-color: #ed3160;
+        position: fixed;
+        left: 3px;
+        top: 3px;
+        padding: 6px 10px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 12px;
+        font-family: Roboto, sans-serif;
+        text-align: center;
+        z-index: 99999;
+        width: 204px;
+      }
+      @keyframes dots-1 {
+        from {
+          opacity: 0;
+        }
+        25% {
+          opacity: 1;
+        }
+      }
+      @keyframes dots-2 {
+        from {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+      @keyframes dots-3 {
+        from {
+          opacity: 0;
+        }
+        75% {
+          opacity: 1;
+        }
+      }
+      @-webkit-keyframes dots-1 {
+        from {
+          opacity: 0;
+        }
+        25% {
+          opacity: 1;
+        }
+      }
+      @-webkit-keyframes dots-2 {
+        from {
+          opacity: 0;
+        }
+        50% {
+          opacity: 1;
+        }
+      }
+      @-webkit-keyframes dots-3 {
+        from {
+          opacity: 0;
+        }
+        75% {
+          opacity: 1;
+        }
+      }
+      .a-inspector-loader .dots span {
+        animation: dots-1 2s infinite steps(1);
+        -webkit-animation: dots-1 2s infinite steps(1);
+      }
+      .a-inspector-loader .dots span:first-child + span {
+        animation-name: dots-2;
+        -webkit-animation-name: dots-2;
+      }
+      .a-inspector-loader .dots span:first-child + span + span {
+        animation-name: dots-3;
+        -webkit-animation-name: dots-3;
+      }
+      a-scene {
+        display: block;
+        position: relative;
+        height: 100%;
+        width: 100%;
+      }
+      a-assets,
+      a-scene audio,
+      a-scene img,
+      a-scene video {
+        display: none;
+      }
+      .a-enter-vr-modal,
+      .a-orientation-modal {
+        font-family: Consolas, Andale Mono, Courier New, monospace;
+      }
+      .a-enter-vr-modal a {
+        border-bottom: 1px solid #fff;
+        padding: 2px 0;
+        text-decoration: none;
+        transition: 0.1s color ease-in;
+      }
+      .a-enter-vr-modal a:hover {
+        background-color: #fff;
+        color: #111;
+        padding: 2px 4px;
+        position: relative;
+        left: -4px;
+      }
+      .a-enter-ar,
+      .a-enter-vr {
+        font-family: sans-serif, monospace;
+        font-size: 13px;
+        width: 100%;
+        font-weight: 200;
+        line-height: 16px;
+        position: absolute;
+        right: 20px;
+        bottom: 20px;
+      }
+      .a-enter-ar {
+        right: 80px;
+      }
+      .a-enter-vr-button,
+      .a-enter-vr-modal,
+      .a-enter-vr-modal a {
+        color: #fff;
+        user-select: none;
+        outline: 0;
+      }
+      .a-enter-vr-button {
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='108' height='62' viewBox='0 0 108 62'%3E%3Ctitle%3Eaframe-vrmode-noborder-reduced-tracking%3C/title%3E%3Cpath d='M68.81,21.56H64.23v8.27h4.58a4.13,4.13,0,0,0,3.1-1.09,4.2,4.2,0,0,0,1-3,4.24,4.24,0,0,0-1-3A4.05,4.05,0,0,0,68.81,21.56Z' fill='%23fff'/%3E%3Cpath d='M96,0H12A12,12,0,0,0,0,12V50A12,12,0,0,0,12,62H96a12,12,0,0,0,12-12V12A12,12,0,0,0,96,0ZM41.9,46H34L24,16h8l6,21.84,6-21.84H52Zm39.29,0H73.44L68.15,35.39H64.23V46H57V16H68.81q5.32,0,8.34,2.37a8,8,0,0,1,3,6.69,9.68,9.68,0,0,1-1.27,5.18,8.9,8.9,0,0,1-4,3.34l6.26,12.11Z' fill='%23fff'/%3E%3C/svg%3E")
+          50% 50% no-repeat rgba(0, 0, 0, 0.35);
+      }
+      .a-enter-ar-button {
+        background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='108' height='62' viewBox='0 0 108 62'%3E%3Ctitle%3Eaframe-armode-noborder-reduced-tracking%3C/title%3E%3Cpath d='M96,0H12A12,12,0,0,0,0,12V50A12,12,0,0,0,12,62H96a12,12,0,0,0,12-12V12A12,12,0,0,0,96,0Zm8,50a8,8,0,0,1-8,8H12a8,8,0,0,1-8-8V12a8,8,0,0,1,8-8H96a8,8,0,0,1,8,8Z' fill='%23fff'/%3E%3Cpath d='M43.35,39.82H32.51L30.45,46H23.88L35,16h5.73L52,46H45.43Zm-9.17-5h7.5L37.91,23.58Z' fill='%23fff'/%3E%3Cpath d='M68.11,35H63.18V46H57V16H68.15q5.31,0,8.2,2.37a8.18,8.18,0,0,1,2.88,6.7,9.22,9.22,0,0,1-1.33,5.12,9.09,9.09,0,0,1-4,3.26l6.49,12.26V46H73.73Zm-4.93-5h5a5.09,5.09,0,0,0,3.6-1.18,4.21,4.21,0,0,0,1.28-3.27,4.56,4.56,0,0,0-1.2-3.34A5,5,0,0,0,68.15,21h-5Z' fill='%23fff'/%3E%3C/svg%3E")
+          50% 50% no-repeat rgba(0, 0, 0, 0.2);
+      }
+      .a-enter-ar-button,
+      .a-enter-vr-button {
+        background-size: 90% 90%;
+        border: 0;
+        bottom: 0;
+        cursor: pointer;
+        min-width: 58px;
+        min-height: 34px;
+        padding-right: 0;
+        padding-top: 0;
+        position: absolute;
+        right: 0;
+        transition: background-color 0.05s ease;
+        -webkit-transition: background-color 0.05s ease;
+        z-index: 9999;
+        border-radius: 8px;
+        touch-action: manipulation;
+      }
+      .a-enter-ar-button {
+        background-size: 100% 90%;
+        margin-right: 10px;
+        border-radius: 7px;
+      }
+      .a-enter-ar-button:active,
+      .a-enter-ar-button:hover,
+      .a-enter-vr-button:active,
+      .a-enter-vr-button:hover {
+        background-color: #ef2d5e;
+      }
+      .a-enter-vr-button.resethover {
+        background-color: rgba(0, 0, 0, 0.35);
+      }
+      [data-a-enter-vr-no-webvr] .a-enter-vr-button {
+        border-color: #666;
+        opacity: 0.65;
+      }
+      [data-a-enter-vr-no-webvr] .a-enter-vr-button:active,
+      [data-a-enter-vr-no-webvr] .a-enter-vr-button:hover {
+        background-color: rgba(0, 0, 0, 0.35);
+        cursor: not-allowed;
+      }
+      .a-enter-vr-modal {
+        background-color: #666;
+        border-radius: 0;
+        display: none;
+        min-height: 32px;
+        margin-right: 70px;
+        padding: 9px;
+        width: 280px;
+        right: 2%;
+        position: absolute;
+      }
+      .a-enter-vr-modal:after {
+        border-bottom: 10px solid transparent;
+        border-left: 10px solid #666;
+        border-top: 10px solid transparent;
+        display: inline-block;
+        content: "";
+        position: absolute;
+        right: -5px;
+        top: 5px;
+        width: 0;
+        height: 0;
+      }
+      .a-enter-vr-modal a,
+      .a-enter-vr-modal p {
+        display: inline;
+      }
+      .a-enter-vr-modal p {
+        margin: 0;
+      }
+      .a-enter-vr-modal p:after {
+        content: " ";
+      }
+      [data-a-enter-vr-no-headset].a-enter-vr:hover .a-enter-vr-modal,
+      [data-a-enter-vr-no-webvr].a-enter-vr:hover .a-enter-vr-modal {
+        display: block;
+      }
+      .a-orientation-modal {
+        background: url(
+            data:image/svg+xml,
+            %3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%2090%2090%22%20enable-background%3D%22new%200%200%2090%2090%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpolygon%20points%3D%220%2C0%200%2C0%200%2C0%20%22%3E%3C/polygon%3E%3Cg%3E%3Cpath%20d%3D%22M71.545%2C48.145h-31.98V20.743c0-2.627-2.138-4.765-4.765-4.765H18.456c-2.628%2C0-4.767%2C2.138-4.767%2C4.765v42.789%20%20%20c0%2C2.628%2C2.138%2C4.766%2C4.767%2C4.766h5.535v0.959c0%2C2.628%2C2.138%2C4.765%2C4.766%2C4.765h42.788c2.628%2C0%2C4.766-2.137%2C4.766-4.765V52.914%20%20%20C76.311%2C50.284%2C74.173%2C48.145%2C71.545%2C48.145z%20M18.455%2C16.935h16.344c2.1%2C0%2C3.808%2C1.708%2C3.808%2C3.808v27.401H37.25V22.636%20%20%20c0-0.264-0.215-0.478-0.479-0.478H16.482c-0.264%2C0-0.479%2C0.214-0.479%2C0.478v36.585c0%2C0.264%2C0.215%2C0.478%2C0.479%2C0.478h7.507v7.644%20%20%20h-5.534c-2.101%2C0-3.81-1.709-3.81-3.81V20.743C14.645%2C18.643%2C16.354%2C16.935%2C18.455%2C16.935z%20M16.96%2C23.116h19.331v25.031h-7.535%20%20%20c-2.628%2C0-4.766%2C2.139-4.766%2C4.768v5.828h-7.03V23.116z%20M71.545%2C73.064H28.757c-2.101%2C0-3.81-1.708-3.81-3.808V52.914%20%20%20c0-2.102%2C1.709-3.812%2C3.81-3.812h42.788c2.1%2C0%2C3.809%2C1.71%2C3.809%2C3.812v16.343C75.354%2C71.356%2C73.645%2C73.064%2C71.545%2C73.064z%22%3E%3C/path%3E%3Cpath%20d%3D%22M28.919%2C58.424c-1.466%2C0-2.659%2C1.193-2.659%2C2.66c0%2C1.466%2C1.193%2C2.658%2C2.659%2C2.658c1.468%2C0%2C2.662-1.192%2C2.662-2.658%20%20%20C31.581%2C59.617%2C30.387%2C58.424%2C28.919%2C58.424z%20M28.919%2C62.786c-0.939%2C0-1.703-0.764-1.703-1.702c0-0.939%2C0.764-1.704%2C1.703-1.704%20%20%20c0.94%2C0%2C1.705%2C0.765%2C1.705%2C1.704C30.623%2C62.022%2C29.858%2C62.786%2C28.919%2C62.786z%22%3E%3C/path%3E%3Cpath%20d%3D%22M69.654%2C50.461H33.069c-0.264%2C0-0.479%2C0.215-0.479%2C0.479v20.288c0%2C0.264%2C0.215%2C0.478%2C0.479%2C0.478h36.585%20%20%20c0.263%2C0%2C0.477-0.214%2C0.477-0.478V50.939C70.131%2C50.676%2C69.917%2C50.461%2C69.654%2C50.461z%20M69.174%2C51.417V70.75H33.548V51.417H69.174z%22%3E%3C/path%3E%3Cpath%20d%3D%22M45.201%2C30.296c6.651%2C0%2C12.233%2C5.351%2C12.551%2C11.977l-3.033-2.638c-0.193-0.165-0.507-0.142-0.675%2C0.048%20%20%20c-0.174%2C0.198-0.153%2C0.501%2C0.045%2C0.676l3.883%2C3.375c0.09%2C0.075%2C0.198%2C0.115%2C0.312%2C0.115c0.141%2C0%2C0.273-0.061%2C0.362-0.166%20%20%20l3.371-3.877c0.173-0.2%2C0.151-0.502-0.047-0.675c-0.194-0.166-0.508-0.144-0.676%2C0.048l-2.592%2C2.979%20%20%20c-0.18-3.417-1.629-6.605-4.099-9.001c-2.538-2.461-5.877-3.817-9.404-3.817c-0.264%2C0-0.479%2C0.215-0.479%2C0.479%20%20%20C44.72%2C30.083%2C44.936%2C30.296%2C45.201%2C30.296z%22%3E%3C/path%3E%3C/g%3E%3C/svg%3E
+          )center/50%50%no-repeatrgba(244, 244, 244, 1);
+        bottom: 0;
+        font-size: 14px;
+        font-weight: 600;
+        left: 0;
+        line-height: 20px;
+        right: 0;
+        position: fixed;
+        top: 0;
+        z-index: 9999999;
+      }
+      .a-orientation-modal:after {
+        color: #666;
+        content: "Insert phone into Cardboard holder.";
+        display: block;
+        position: absolute;
+        text-align: center;
+        top: 70%;
+        transform: translateY(-70%);
+        width: 100%;
+      }
+      .a-orientation-modal button {
+        background: url(
+            data:image/svg+xml,
+            %3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20xmlns%3Axlink%3D%22http%3A//www.w3.org/1999/xlink%22%20version%3D%221.1%22%20x%3D%220px%22%20y%3D%220px%22%20viewBox%3D%220%200%20100%20100%22%20enable-background%3D%22new%200%200%20100%20100%22%20xml%3Aspace%3D%22preserve%22%3E%3Cpath%20fill%3D%22%23000000%22%20d%3D%22M55.209%2C50l17.803-17.803c1.416-1.416%2C1.416-3.713%2C0-5.129c-1.416-1.417-3.713-1.417-5.129%2C0L50.08%2C44.872%20%20L32.278%2C27.069c-1.416-1.417-3.714-1.417-5.129%2C0c-1.417%2C1.416-1.417%2C3.713%2C0%2C5.129L44.951%2C50L27.149%2C67.803%20%20c-1.417%2C1.416-1.417%2C3.713%2C0%2C5.129c0.708%2C0.708%2C1.636%2C1.062%2C2.564%2C1.062c0.928%2C0%2C1.856-0.354%2C2.564-1.062L50.08%2C55.13l17.803%2C17.802%20%20c0.708%2C0.708%2C1.637%2C1.062%2C2.564%2C1.062s1.856-0.354%2C2.564-1.062c1.416-1.416%2C1.416-3.713%2C0-5.129L55.209%2C50z%22%3E%3C/path%3E%3C/svg%3E
+          )no-repeat;
+        border: none;
+        height: 50px;
+        text-indent: -9999px;
+        width: 50px;
+      }
+      .a-loader-title {
+        background-color: rgba(0, 0, 0, 0.6);
+        font-family: sans-serif, monospace;
+        text-align: center;
+        font-size: 20px;
+        height: 50px;
+        font-weight: 300;
+        line-height: 50px;
+        position: absolute;
+        right: 0;
+        left: 0;
+        top: 0;
+        color: #fff;
+      }
+      .a-modal {
+        background: 0 0/50% 50% rgba(0, 0, 0, 0.6);
+        bottom: 0;
+        font-size: 14px;
+        font-weight: 600;
+        left: 0;
+        line-height: 20px;
+        right: 0;
+        position: fixed;
+        top: 0;
+        z-index: 9999999;
+      }
+      .a-dialog {
+        position: relative;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 199995;
+        width: 300px;
+        height: 200px;
+        background-size: contain;
+        background-color: #fff;
+        font-family: sans-serif, monospace;
+        font-size: 20px;
+        border-radius: 3px;
+        padding: 6px;
+      }
+      .a-dialog-text-container {
+        width: 100%;
+        height: 70%;
+        align-self: flex-start;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        flex-direction: column;
+      }
+      .a-dialog-text {
+        display: inline-block;
+        font-weight: 400;
+        font-size: 14pt;
+        margin: 8px;
+      }
+      .a-dialog-buttons-container {
+        display: inline-flex;
+        align-self: flex-end;
+        width: 100%;
+        height: 30%;
+      }
+      .a-dialog-button {
+        cursor: pointer;
+        align-self: center;
+        opacity: 0.9;
+        height: 80%;
+        width: 50%;
+        font-size: 12pt;
+        margin: 4px;
+        border-radius: 2px;
+        text-align: center;
+        border: none;
+        display: inline-block;
+        -webkit-transition: all 0.25s ease-in-out;
+        transition: all 0.25s ease-in-out;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.2);
+        user-select: none;
+      }
+      .a-dialog-permission-button:hover {
+        box-shadow: 0 7px 14px rgba(0, 0, 0, 0.2), 0 2px 2px rgba(0, 0, 0, 0.2);
+      }
+      .a-dialog-allow-button {
+        background-color: #00ceff;
+      }
+      .a-dialog-deny-button {
+        background-color: #ff005b;
+      }
+      .a-dialog-ok-button {
+        background-color: #00ceff;
+        width: 100%;
+      }
+    </style>
+    <style type="text/css" data-href="src\style\rStats.css">
+      .rs-base {
+        background-color: #333;
+        color: #fafafa;
+        border-radius: 0;
+        font: 10px monospace;
+        left: 5px;
+        line-height: 1em;
+        opacity: 0.85;
+        overflow: hidden;
+        padding: 10px;
+        position: fixed;
+        top: 5px;
+        width: 300px;
+        z-index: 10000;
+      }
+      .rs-base div.hidden {
+        display: none;
+      }
+      .rs-base h1 {
+        color: #fff;
+        cursor: pointer;
+        font-size: 1.4em;
+        font-weight: 300;
+        margin: 0 0 5px;
+        padding: 0;
+      }
+      .rs-group {
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-flex-direction: column-reverse;
+        flex-direction: column-reverse;
+        margin-bottom: 5px;
+      }
+      .rs-group:last-child {
+        margin-bottom: 0;
+      }
+      .rs-counter-base {
+        align-items: center;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        height: 10px;
+        -webkit-justify-content: space-between;
+        justify-content: space-between;
+        margin: 2px 0;
+      }
+      .rs-counter-base.alarm {
+        color: #b70000;
+        text-shadow: 0 0 0 #b70000, 0 0 1px #fff, 0 0 1px #fff, 0 0 2px #fff,
+          0 0 2px #fff, 0 0 3px #fff, 0 0 3px #fff, 0 0 4px #fff, 0 0 4px #fff;
+      }
+      .rs-counter-id {
+        font-weight: 300;
+        -webkit-box-ordinal-group: 0;
+        -webkit-order: 0;
+        order: 0;
+        width: 54px;
+      }
+      .rs-counter-value {
+        font-weight: 300;
+        -webkit-box-ordinal-group: 1;
+        -webkit-order: 1;
+        order: 1;
+        text-align: right;
+        width: 35px;
+      }
+      .rs-canvas {
+        -webkit-box-ordinal-group: 2;
+        -webkit-order: 2;
+        order: 2;
+      }
+      @media (min-width: 480px) {
+        .rs-base {
+          left: 20px;
+          top: 20px;
+        }
+      }
+    </style>
+    <script src="VRCore/aframe-environment-component.min.js"></script>
+    <script src="VRCore/aframe-extras.min.js"></script>
+    <script src="VRCore/aframe-teleport-controls.min.js"></script>
+
+    <!-- <script src="VRCore/aframe-thumb-controls-component.min.js"></script>  -->
+    <script src="VRCore/aframe-lensflare-component.min.js"></script>
+    <script src="VRCore/aframe-text-geometry-component.min.js"></script>
+    <script src="VRCore/aframe-alongpath-component.min.js"></script>
+    <script src="VRCore/aframe-curve-component.min.js"></script>
+    <!-- <script src="VRCore/aframe-rounded-component.min.js"></script>  -->
+    <!-- <script src="VRCore/aframe-layout-component.min.js"></script>  -->
+    <!-- <script src="VRCore/aframe-multisrc-component.js"></script>  -->
+    <!-- <script src="VRCore/super-hands.min.js"></script>  -->
+
+    <script src="VRCore/aframe-particle-system-component.min.js"></script>
+
+    <!-- For navmesh generation, uncomment and inspector-plugin-recast to <a-scene> tag, example below.   <script src="https://recast-api.donmccurdy.com/aframe-inspector-plugin-recast.js"></script>
+    <a-scene inspector-plugin-recast>  -->
+
+    <!-- Used for my installed version of NAF  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+    <script src="/easyrtc/easyrtc.js"></script>
+    <script src="/dist/networked-aframe.js"></script>
+    <script src="https://unpkg.com/aframe-randomizer-components@^3.0.1/dist/aframe-randomizer-components.min.js"></script>
+    <script src="/js/spawn-in-circle.component.js"></script>
+    <script src="/js/info-message3.js"></script>
+
+    <style type="text/css">
+      #video-permission {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: white;
+        z-index: 10000;
+        display: none;
+      }
+      #video-permission-button {
+        position: fixed;
+        top: calc(50% - 1em);
+        left: calc(50% - 60px);
+        width: 120px;
+        height: 2em;
+      }
+    </style>
+
+    <script type="text/javascript">
+      var Speech = true;
+      var audio1 = new Audio("assets/wav/action.wav");
+      var audio2 = new Audio("assets/wav/swoosh.wav");
+      var not360video = false;
+
+      // Audio squawk for the duck
+      var squawk = new Audio(
+        "https://rocketvirtual.com/aframePACKAGE/assets/mp3/duck.mp3"
+      );
+
+      // Function to execute onclick
+      function fire_laser() {
+        // Make Duck Quack sound
+        squawk.play();
+
+        //Disappear Duck
+        document.getElementById("movingDuck").setAttribute("visible", "false");
+      }
+
+      function doCylinder() {
+        // Bring back visibility of Duck and Cube, turn Sphere red again
+        document.getElementById("movingDuck").setAttribute("visible", true);
+        document.getElementById("cube").setAttribute("visible", true);
+        document.getElementById("sphere").setAttribute("color", "red");
+      }
+
+      function doCube() {
+        // Make Sphere green, disappear Cube for now
+        document.getElementById("sphere").setAttribute("color", "green");
+        document.getElementById("cube").setAttribute("visible", false);
+      }
+
+      // Component to do on click.
+      AFRAME.registerComponent("click-listener", {
+        init: function() {
+          this.el.addEventListener("click", function(evt) {
+            // remove clicked object from view
+            //this.setAttribute('visible', false);
+          });
+        }
+      });
+
+      AFRAME.registerComponent("audiohandler", {
+        init: function() {
+          let playing = false;
+          let audio = document.querySelector("#playAudio");
+          this.el.addEventListener("click", () => {
+            if (!playing) {
+              audio.play();
+            } else {
+              audio.pause();
+              audio.currentTime = 0;
+            }
+            playing = !playing;
+          });
+        }
+      });
+      AFRAME.registerComponent("navigate", {
+        schema: { url: { default: "" } },
+        init: function() {
+          var data = this.data;
+          this.el.addEventListener("click", function() {
+            window.location = data.url;
+          });
+        }
+      });
+
+      function speakInfo(narration) {
+        var audio_msg = new SpeechSynthesisUtterance(narration);
+        if (Speech === true) {
+          window.speechSynthesis.speak(audio_msg);
+        }
+      }
+
+      /*  Code for a teleport orb.  Needs to make objects in scene "invisible" and then visible again when returning from teleport.
+
+
+      function changeOrb(orb_num) {
+        document.getElementById('orbSky').setAttribute('material', 'src: #orb' + orb_num.toString());
+        removeScene();
+      }
+      function removeScene() {
+        document.getElementById('MeetingBuildings').setAttribute('visible', false);
+
+        document.getElementById('ReturnIsland').setAttribute('visible', true);
+      }
+      function restoreScene() {
+        document.getElementById('orbSky').setAttribute('material', 'src: #orb1');
+        document.getElementById('MeetingBuildings').setAttribute('visible', true);
+
+        document.getElementById('ReturnIsland').setAttribute('visible', false);
+      }
+      function sqrImg(imgNum) {
+        document.getElementById('orb_2Dimg' + imgNum).setAttribute('visible', true);
+        document.getElementById('OrbName_place' + imgNum).setAttribute('visible', true);
+      }
+      function dspImg(dimgNum) {
+        document.getElementById('orb_2Dimg' + dimgNum).setAttribute('visible', false);
+        document.getElementById('OrbName_place' + dimgNum).setAttribute('visible', false);
+      }
+      function playSwoosh() {
+        audio2.play();
+      }
+
+      function playBlip() {
+        audio1.play();
+      }
+      function playSound() {
+      }
+      function play360() {
+          document.getElementById('vrVideo360').setAttribute('visible', true);
+          document.getElementById('orbSky').setAttribute('visible', false);
+          document.querySelector("#video-src").components.material.material.map.image.play();
+          document.getElementById('video-screen').setAttribute('visible', false);
+      }
+      function STOPplay360() {
+          document.getElementById('vrVideo360').setAttribute('visible', false);
+          document.getElementById('orbSky').setAttribute('visible', true);
+      }
+
+
+*/
+    </script>
+    <style>
+      .a-info-message {
+        border-radius: 10px;
+        position: absolute;
+        width: 400px;
+        height: 320px;
+        background-color: white;
+        border: 3px solid rgba(0, 0, 0, 0.75);
+        bottom: 22px;
+        left: 22px;
+        color: rgb(51, 51, 51);
+        padding: 20px 15px 0 15px;
+        font-size: 11pt;
+        line-height: 20pt;
+      }
+      .a-info-message a {
+        border-bottom: 1px solid rgba(53, 196, 232, 0.15);
+        color: #1497b8;
+        position: relative;
+        text-decoration: none;
+        transition: 0.05s ease;
+      }
+      @media only screen and (min-width: 1200px) {
+        .a-info-message {
+          font-size: 12pt;
+        }
+      }
+      @media only screen and (max-width: 600px) {
+        .a-info-message {
+          left: 20px;
+          right: 20px;
+          bottom: 60px;
+          width: auto;
+        }
+      }
+      @media only screen and (max-height: 600px) {
+        .a-info-message {
+          left: 20px;
+          bottom: 20px;
+          height: 250px;
+        }
+      }
+      .a-close-button-info {
+        width: 25px;
+        height: 25px;
+        padding: 0;
+        top: 10px;
+        right: 10px;
+        position: absolute;
+        color: white;
+        font-size: 12px;
+        line-height: 12px;
+        border: none;
+        background-color: #ef2d5e;
+        border-radius: 5px;
+        font-weight: medium;
+      }
+      .a-close-button-info:hover {
+        background-color: #b32146;
+        color: white;
+      }
+      .a-info-message-container {
+        position: absolute;
+        left: 80px;
+        bottom: 20px;
+      }
+      .a-info-message-button {
+        background: rgba(0, 0, 0, 0.2)
+          url(assets/img/insButton3.png)50%50%no-repeat;
+      }
+      .a-info-message-button {
+        background-size: 90% 90%;
+        border: 0;
+        bottom: 0;
+        cursor: pointer;
+        min-width: 134px;
+        min-height: 54px;
+        padding-right: 0;
+        padding-top: 0;
+        position: absolute;
+        right: 80;
+        transition: background-color 0.05s ease;
+        -webkit-transition: background-color 0.05s ease;
+        z-index: 9999;
+        border-radius: 8px;
+        touch-action: manipulation;
+      }
+      .a-info-message-button:active,
+      .a-info-message-button:hover {
+        background-color: #ef2d5e;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="video-permission">
+      <button id="video-permission-button">Allow VR Video</button>
+    </div>
+    <button id="playButton" type="button">Play Music</button>
+    <audio id="playAudio" autoplay="" loop="">
+      <!-- <source src="https://rocketvirtual.com/A-Frame_WebXR/assets/mp3/Romanzeandante.mp3" type="audio/mpeg"> --->
+    </audio>
+
+    <!--    <a-scene background="color: #FAFAFA">  -->
+
+    <!--  NAF a-scene parameters -->
+
+    <a-scene
+      networked-scene="
+      room: HelloWorld;
+      debug: true;
+      adapter: easyrtc;
+      audio: true;"
+      info-message="htmlSrc: #messageText"
+      inspector=""
+      keyboard-shortcuts=""
+      screenshot=""
+      vr-mode-ui=""
+      device-orientation-permission-ui=""
+      fog=""
+    >
+      <a-assets>
+        <a-asset-item
+          id="messageText"
+          src="ControlsMessage.html"
+          response-type="text"
+        ></a-asset-item>
+        <!-- Our font -->
+        <a-asset-item
+          id="optimerBoldFont"
+          src="assets/fonts/optimer_bold.typeface.json"
+        ></a-asset-item>
+
+        <img
+          crossorigin="anonymous"
+          id="flare-asset"
+          src="assets/img/adjustflare.jpg"
+        />
+
+        <!-- Duck 3D GltF model -->
+        <a-asset-item id="duck" src="assets/gltf/Duck.glb"></a-asset-item>
+
+        <!-- Teleport Orbs assets and mixin.  See objects below and Javascript above
+
+        <a-mixin id="marble" geometry="primitive: sphere" scale=".30 .30 .30" animation__rotation="startEvents: mouseenter; pauseEvents: mouseleave; resumeEvents: mouseenter; property: rotation; to: 0 360 0; loop: true; dur: 10000" animation__mouseenter="startEvents: mouseenter; pauseEvents: mouseleave; resumeEvents: mouseenter; property: components.material.material.color; type: color; to: white;  dur: 500; " animation__mouseleave="property: components.material.material.color; type: color; to: gray; startEvents: mouseleave; dur: 500;" shadow ></a-mixin>
+        <img crossorigin="anonymous" id="orb1" src="assets/360/image/skyland2.jpg">
+        <img crossorigin="anonymous" id="orb5" src="assets/360/image/theBeach.jpg">
+        <img crossorigin="anonymous" id="orb7" src="assets/360/image/SAM_101_0152.jpg">
+        <img crossorigin="anonymous" id="orb8" src="assets/360/image/SAM_101_0128.jpg">
+        <img crossorigin="anonymous" id="orbthumb5" src="assets/360/image/thumb/theBeach_thumb.jpg">
+        <img crossorigin="anonymous" id="orbthumb7" src="assets/360/image/thumb/SAM_101_0152_thumb.jpg">
+        <img crossorigin="anonymous" id="orbthumb8" src="assets/360/image/thumb/SAM_101_0128_thumb.jpg">
+        <img crossorigin="anonymous" id="imgthumb5" src="assets/360/image/imgthumb/theBeach.jpg">
+        <img crossorigin="anonymous" id="imgthumb7" src="assets/360/image/imgthumb/SAM_101_0152_imgthumb.jpg">
+        <img crossorigin="anonymous" id="imgthumb8" src="assets/360/image/imgthumb/SAM_101_0128_imgthumb.jpg">
+        <img crossorigin="anonymous" id="ReturnBack" src="assets/img/ReturnBack.png">
+-->
+
+        <!-- Video player control assets.  See Javascript in script tags below. --->
+
+        <img crossorigin="anonymous" src="assets/img/play2.png" id="play" />
+        <img crossorigin="anonymous" src="assets/img/pause.png" id="pause" />
+        <img
+          crossorigin="anonymous"
+          src="assets/img/volume-normal.png"
+          id="volume-normal"
+        />
+        <img
+          crossorigin="anonymous"
+          src="assets/img/volume-mute.png"
+          id="volume-mute"
+        />
+        <img
+          crossorigin="anonymous"
+          src="assets/img/seek-back.png"
+          id="seek-back"
+        />
+        <video
+          crossorigin="anonymous"
+          id="video-src"
+          src="assets/video/makerFinal2.mp4"
+          playsinline=""
+          webkit-playsinline=""
+        ></video>
+
+        <!-- Used for NAF with the Avatar robot head and video conference box-->
+
+        <a-asset-item
+          id="RobotHead"
+          src="assets/gltf/FinalEditRoboHead.glb"
+        ></a-asset-item>
+        <a-asset-item
+          id="LHand"
+          src="assets/gltf/leftHandLow.glb"
+        ></a-asset-item>
+        <a-asset-item
+          id="RHand"
+          src="assets/gltf/rightHandLow.glb"
+        ></a-asset-item>
+
+        <template id="avatar-template">
+          <a-entity networked-audio-source=""></a-entity>
+        </template>
+        <template id="head-template">
+          <a-entity
+            class="cam"
+            gltf-model="#RobotHead"
+            scale="0.004 0.004 0.004"
+          ></a-entity>
+        </template>
+        <template id="hand-left">
+          <a-entity class="leftController">
+            <a-entity gltf-model="#LHand"></a-entity>
+          </a-entity>
+        </template>
+        <template id="hand-right">
+          <a-entity class="rightController">
+            <a-entity gltf-model="#RHand"></a-entity>
+          </a-entity>
+        </template>
+
+        <!-- for creating our own sky and sea, or ground if modified  <img crossorigin="anonymous" id="orb1" src="assets/360/image/skyland2.jpg">  -->
+      </a-assets>
+
+      <!-- nav-mesh: protecting us from running thru sphere, cube and cylinder
+      <a-entity id="navmesh-Hello" gltf-model="assets/gltf/AdvHelloWorldnavmesh.gltf" visible="false" nav-mesh=""></a-entity>  -->
+
+      <!-- Basic movement and teleportation
+      <a-entity id="cameraRig" movement-controls="constrainToNavMesh: true;" navigator="cameraRig: #cameraRig; cameraHead: #head; collisionEntities: .collision; ignoreEntities: .clickable" position="0 0 0" rotation="0 0 0">
+
+        <a-entity id="head" camera="active: true" position="0 1.6 0" look-controls="" ></a-entity>
+
+              <a-entity id="leftHand" hand-controls="hand: left; handModelStyle: lowPoly; color: #15ACCF" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger; curveShootingSpeed: 18; landingMaxAngle: 60" visible="true"></a-entity>
+
+              <a-entity id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #15ACCF" laser-controls raycaster="showLine: true; far: 10; interval: 0; objects: .clickable, a-link;" line="color: #7cfc00; opacity: 0.5" visible="true"></a-entity>
+      </a-entity>  -->
+
+      <!--  Used with teleportation orbs.  Includes lens flare for sun. Not use with a-frame-environment.  You'll have to create your own.
+
+      <a-sky id="orbSky" material="src: #orb1" rotation="0 0 0" ></a-sky>
+      <a-sphere id="flare" radius="0.05" color="yellow" lensflare="createLight:false; relative: true; src: #flare-asset; position:-303.76151 57.79742 4.88911; lightColor:yellow; intensity: 5; lightDecay: 500" position="-303.76151 57.79742 4.88911"></a-sphere>
+-->
+
+      <!--  Used for NAF with Avatar template -->
+
+      <a-entity
+        id="mouseCursor"
+        cursor="rayOrigin: mouse"
+        raycaster=""
+      ></a-entity>
+      <a-entity
+        id="navmesh-walls"
+        gltf-model="assets/gltf/AdvHelloWorldnavmesh.gltf"
+        visible="false"
+        nav-mesh=""
+      ></a-entity>
+      <a-entity
+        id="avatar"
+        networked="template:#avatar-template;attachTemplateToLocal:false;"
+        movement-controls="constrainToNavMesh: true;"
+        spawn-in-circle="radius:3"
+        rotation=""
+        position=""
+        gamepad-controls=""
+        trackpad-controls=""
+        keyboard-controls=""
+        touch-controls=""
+      >
+        <a-entity
+          class="cam"
+          networked="template:#head-template;attachTemplateToLocal:false;"
+          camera="active: true"
+          position="0 1.6 0"
+          look-controls=""
+          id="naf-fxe7tq9"
+          rotation=""
+        ></a-entity>
+        <a-entity
+          class="leftController"
+          networked="template:#hand-left;attachTemplateToLocal:false;"
+          hand-controls="hand: left; handModelStyle: lowPoly; color: #15ACCF"
+          teleport-controls="cameraRig: #avatar; teleportOrigin: #cam; button: trigger; type: line; curveShootingSpeed: 10; collisionEntities: #navmesh-walls; landingMaxAngle: 60"
+          visible="true"
+          id="naf-sumxr4d"
+          magicleap-controls=""
+          vive-controls=""
+          oculus-touch-controls=""
+          windows-motion-controls=""
+        ></a-entity>
+        <a-entity
+          class="rightController"
+          networked="template:#hand-right;attachTemplateToLocal:false;"
+          hand-controls="hand: right; handModelStyle: lowPoly; color: #15ACCF"
+          laser-controls=""
+          raycaster="showLine: true; far: 10; interval: 0; objects: .clickable, a-link;"
+          line="color: #7cfc00; opacity: 0.5"
+          visible="true"
+          id="naf-pa61jg9"
+          daydream-controls=""
+          gearvr-controls=""
+          magicleap-controls=""
+          oculus-go-controls=""
+          oculus-touch-controls=""
+          valve-index-controls=""
+          vive-controls=""
+          vive-focus-controls=""
+          windows-motion-controls=""
+          generic-tracked-controller-controls=""
+        ></a-entity>
+      </a-entity>
+
+      <a-entity
+        position="0 2.25 -15"
+        particle-system="preset: snow; particleCount: 400"
+      ></a-entity>
+
+      <!-- Teleport orbs  See Assets and Javascript above for how this works.
+
+      <a-sphere id="orb_place5" class="clickable" mixin="marble" position="-13.2652 0.83949 1.28868" rotation="0 45 0" material="src: #orbthumb5" onclick="playSwoosh();changeOrb(5);STOPplay360();"  onmouseenter="sqrImg(5);" onmouseleave="dspImg(5);"></a-sphere>
+      <a-sphere id="orb_place7" class="clickable" mixin="marble" position="-15.84266 0.83949 1.28868" rotation="0 45 0" material="src: #orbthumb7" onclick="playSwoosh();changeOrb(7);STOPplay360();"  onmouseenter="sqrImg(7);" onmouseleave="dspImg(7);"></a-sphere>
+      <a-sphere id="orb_place8" class="clickable" mixin="marble" position="-14.52535 0.83949 1.28868" rotation="0 45 0" material="src: #orbthumb8" onclick="playSwoosh();changeOrb(8);STOPplay360();"  onmouseenter="sqrImg(8);" onmouseleave="dspImg(8);"></a-sphere>
+      <a-entity id="OrbName_place5" material="color: #F9CF45" class="clickable" position="-15.05045 2.8206 0.24142" rotation="0 0 0" text-geometry="value: The Beach; size: 0.12; font: #optimerBoldFont" onclick="playBlip();speakInfo('The Beach');" visible="false"></a-entity>
+      <a-entity id="OrbName_place7" material="color: #F9CF45" class="clickable" position="-15.05045 2.8206 0.24142" rotation="0 0 0" text-geometry="value: Pier and Bridge; size: 0.12; font: #optimerBoldFont" onclick="playBlip();speakInfo('Pier and Bridge');" visible="false"></a-entity>
+      <a-entity id="OrbName_place8" material="color: #F9CF45" class="clickable" position="-15.05045 2.8206 0.24142" rotation="0 0 0" text-geometry="value: Downtown SF; size: 0.12; font: #optimerBoldFont" onclick="playBlip();speakInfo('San Francisco Market Street');" visible="false"></a-entity>
+      <a-plane id="orb_2Dimg5" position="-14.50827 1.85704 0.24142" scale="2.168 1.8 0.1" rotation="0 0 0" material="src: #imgthumb5"  visible="false"></a-plane>
+      <a-plane id="orb_2Dimg7" position="-14.50827 1.85704 0.24142" scale="2.168 1.8 0.1" rotation="0 0 0" material="src: #imgthumb7" visible="false"></a-plane>
+      <a-plane id="orb_2Dimg8" position="-14.50827 1.85704 0.24142" scale="2.168 1.8 0.1" rotation="0 0 0" material="src: #imgthumb8" visible="false"></a-plane>
+      <a-box id="ReturnIsland" class="clickable" position="-13.75949 0.29908 1.42523" rotation="-27.121 0 0" material="src: #ReturnBack" scale="0.3 0.3 0.3" onclick="restoreScene();" shadow visible="false"></a-box>      
+
+-->
+
+      <!-- Normal Hello World objects modified to respond to onclick and audio  -->
+      <a-box
+        id="cube"
+        class="clickable"
+        position="-1 0.66921 -3"
+        rotation="0 45 0"
+        color="#4CC3D9"
+        visible="true"
+        shadow=""
+        onclick="doCube();"
+        click-listener=""
+        material=""
+        geometry=""
+      ></a-box>
+      <a-sphere
+        id="sphere"
+        class="clickable"
+        position="0 1.44508 -5"
+        radius="1.25"
+        color="#EF2D5E"
+        shadow=""
+        audiohandler=""
+        material=""
+        geometry=""
+      ></a-sphere>
+      <a-cylinder
+        id="cylinder"
+        class="clickable"
+        position="1 0.8993 -3"
+        radius="0.5"
+        height="1.5"
+        color="#FFC65D"
+        shadow=""
+        onclick="doCylinder();"
+        click-listener=""
+        material=""
+        geometry=""
+      ></a-cylinder>
+      <a-plane
+        position="0 0.08958 -4"
+        rotation="-90 0 0"
+        width="4"
+        height="4"
+        color="#7BC8A4"
+        shadow="recieve: true"
+        material=""
+        geometry=""
+      ></a-plane>
+
+      <a-entity
+        id="movingDuck"
+        class="clickable"
+        gltf-model="#duck"
+        alongpath="curve:#track;loop:true;dur:14000;rotate:true"
+        position="0 1.6 -5"
+        shadow="receive:false"
+        scale="1 1 1"
+        animation__rotate="property: rotation; dur: 2000; easing: linear; loop: true; to: 0 360 0"
+        onclick="fire_laser();"
+        cursor-listener=""
+      ></a-entity>
+
+      <!-- A track for our Duck to follow  -->
+      <a-curve id="track" curve="">
+        <a-curve-point
+          position="0 1 8"
+          geometry="height:0.1;width:0.1;depth:0.1"
+          material="color:#ff0000"
+          curve-point=""
+          visible="false"
+        ></a-curve-point>
+        <a-curve-point
+          position="5 1 6"
+          geometry="height:0.1;width:0.1;depth:0.1"
+          material="color:#ff0000"
+          curve-point=""
+          visible="false"
+        ></a-curve-point>
+        <a-curve-point
+          position="7 1 0"
+          geometry="height:0.1;width:0.1;depth:0.1"
+          material="color:#ff0000"
+          curve-point=""
+          visible="false"
+        ></a-curve-point>
+        <a-curve-point
+          position="5 1 -5"
+          geometry="height:0.1;width:0.1;depth:0.1"
+          material="color:#ff0000"
+          curve-point=""
+          visible="false"
+        ></a-curve-point>
+        <a-curve-point
+          position="0 1 -7"
+          geometry="height:0.1;width:0.1;depth:0.1"
+          material="color:#ff0000"
+          curve-point=""
+          visible="false"
+        ></a-curve-point>
+        <a-curve-point
+          position="-6 1 -5"
+          geometry="height:0.1;width:0.1;depth:0.1"
+          material="color:#ff0000"
+          curve-point=""
+          visible="false"
+        ></a-curve-point>
+        <a-curve-point
+          position="-8 1 0"
+          geometry="height:0.1;width:0.1;depth:0.1"
+          material="color:#ff0000"
+          curve-point=""
+          visible="false"
+        ></a-curve-point>
+        <a-curve-point
+          position="-6 1 6"
+          geometry="height:0.1;width:0.1;depth:0.1"
+          material="color:#ff0000"
+          curve-point=""
+          visible="false"
+        ></a-curve-point>
+        <a-curve-point
+          position="0 1 8"
+          geometry="height:0.1;width:0.1;depth:0.1"
+          material="color:#ff0000"
+          curve-point=""
+          visible="false"
+        ></a-curve-point>
+      </a-curve>
+
+      <!-- The track line in red 
+      <a-draw-curve curveref="#track" material="shader: line; color: red;"></a-draw-curve>  -->
+
+      <!-- Our Environment - Using this means you can't use teleporting orbs.-->
+      <a-entity
+        environment="preset: forest; dressing: mushrooms;  dressingUniformScale: true; dressingColor: #6e1d8b; ground: hills; groundTexture: walkernoise; groundColor: #34711C; groundColor2: #319D06; grid: 1x1; gridColor: #81F995; skyType: gradient; skyColor: #A4CFFA; horizonColor: #95C8FA; fog: .75"
+        shadow="recieve: true"
+        visible=""
+        ><a-entity
+          class="environment"
+          position=""
+          light=""
+          visible=""
+        ></a-entity
+        ><a-entity
+          class="environment"
+          position=""
+          light=""
+          visible=""
+        ></a-entity
+        ><a-entity
+          rotation=""
+          class="environmentGround environment"
+          visible=""
+          scale=""
+          shadow=""
+        ></a-entity
+        ><a-entity class="environmentDressing environment" visible=""></a-entity
+        ><a-sky
+          radius="200"
+          theta-length="110"
+          class="environment"
+          material=""
+          visible=""
+          geometry=""
+          scale=""
+        ></a-sky
+      ></a-entity>
+
+      <!-- if you want to use teleporting orbs, then you will need to design your own sky and environment, rather than use aframe-environment-component and removeScene() and restoreScene() in JavaScript above.  As well as teleport orbs html above and assets . . .   included an ocean as well,if needed.
+      <a-sky id="orbSky" material="src: #orb1" rotation="0 0 0" ></a-sky>
+      <a-ocean id="ourOcean" position="-1.16307 -2.58219 -1.77499" scale="15 15 15" width="50" depth="50" opacity=".55" ocean="color: #06C6CB; density: 45; amplitude: -0.2; speed: 0.95; speedVariance: 0.2"></a-ocean>    -->
+
+      <!-- A lens flare for the sun  -->
+      <a-sphere
+        id="flare"
+        radius="0.05"
+        color="yellow"
+        lensflare="createLight:false; relative: true; src: #flare-asset; position:25.89662 46.17562 36.51548; lightColor:yellow; intensity: 5; lightDecay: 500"
+        position="25.89662 46.17562 36.51548"
+        material=""
+        geometry=""
+      ></a-sphere>
+
+      <!-- A light in the scene casting shadows -->
+      <a-entity
+        light="intensity: 0.6; castShadow: true; shadowCameraLeft: -50; shadowCameraBottom: -50; shadowCameraRight: 50; shadowCameraTop: 50; shadowCameraVisible: false"
+        position="9.9649 17.32329 13.93447"
+      ></a-entity>
+
+      <!-- Some 3D Text -->
+      <a-entity
+        position="-3.44 2.801 -5.127"
+        text-geometry="value: WebXR"
+        material="color: #FFFFFF"
+      ></a-entity>
+      <a-entity
+        position="-0.62866 2.793 -5.09"
+        text-geometry="value: Hello World; font: #optimerBoldFont"
+        material="color: #000000"
+      ></a-entity>
+
+      <!-- Video screen and controls --->
+      <a-entity id="videoplayer" position="15.18857 0 15.46217">
+        <a-sound
+          id="alert-sound"
+          src="src: url(assets/wav/action.wav)"
+          autoplay="false"
+          position="0 0 0"
+          sound=""
+        ></a-sound>
+        <a-video
+          id="video-screen"
+          src="#video-src"
+          position="-14.49203 2.02774 -0.615"
+          rotation="0 180 0"
+          scale="0.50761 0.49394 1"
+          width="8"
+          height="4"
+          visible="true"
+          material=""
+          geometry=""
+        ></a-video>
+        <a-image
+          class="clickable"
+          id="control-back"
+          width="0.4"
+          height="0.4"
+          src="#seek-back"
+          position="-14.03154 0.655 -0.62827"
+          rotation="0 -180 0"
+          visible="false"
+          scale="0.85 0.85 0.85"
+          material=""
+          geometry=""
+        ></a-image>
+        <a-image
+          class="clickable"
+          id="control-play"
+          width="0.4"
+          height="0.4"
+          src="#play"
+          position="-14.47551 0.655 -0.62827"
+          rotation="0 -180 0"
+          material=""
+          geometry=""
+        ></a-image>
+        <a-image
+          class="clickable"
+          id="control-volume"
+          width="0.4"
+          height="0.4"
+          src="#volume-mute"
+          position="-14.93669 0.655 -0.62827"
+          rotation="0 -180 0"
+          visible="false"
+          scale="0.75 0.75 0.75"
+          material=""
+          geometry=""
+        ></a-image>
+        <a-entity
+          id="progress-bar"
+          geometry="primitive:plane;height:0.1;width:4"
+          material="opacity:0;transparent:true;visible:false"
+          position="-14.49159 0.93157 -0.62827"
+          rotation="0 -180 0"
+        >
+          <a-plane
+            id="progress-bar-track"
+            width="4"
+            height="0.1"
+            color="gray"
+            position=""
+            opacity="0.2"
+            material=""
+            visible="false"
+            geometry=""
+          ></a-plane>
+          <a-plane
+            id="progress-bar-fill"
+            width="0"
+            height="0.1"
+            color="#7198e5"
+            position="-0.7515086072831705 0 0"
+            geometry=""
+            visible="false"
+            material=""
+          ></a-plane>
+        </a-entity> </a-entity
+      ><canvas
+        class="a-canvas a-grab-cursor a-mouse-cursor-hover"
+        data-aframe-canvas="true"
+        width="232"
+        height="1752"
+        style=""
+      ></canvas>
+      <div class="a-loader-title" style="display: none;">
+        Super Duper Advanced Hello World WebXR FROZEN A-frame 1.1.9 Custom
+        Version
+      </div>
+      <a-entity class="teleportRay" visible=""></a-entity
+      ><a-entity class="hitEntity" visible=""
+        ><a-entity geometry="" rotation="" material=""></a-entity
+        ><a-entity position="" geometry="" material=""></a-entity
+      ></a-entity>
+      <div class="a-info-message-container">
+        <button
+          class="a-info-message-button"
+          title="Information about connection and movement"
+        ></button>
+      </div>
+      <div class="a-info-message" aframe-injected="" style="display: none;">
+        <center>
+          <p></p>
+          <h3>This is a VR enabled web page.</h3>
+          <p></p>
+          <p>
+            <i>
+              <a href="https://funbit64.com/node/4" target="_blank"
+                >CONNECTION INSTRUCTIONS: Microphone and earphones must be
+                available and allowed inside your browser to hear any audio
+                between connected persons (click here)</a
+              >.<br />MOVEMENT: If you have no VR Headset, use the Arrow keys to
+              move around, the left mouse button drag in the center of the
+              screen rotates your view, pressing the ESC key recovers your mouse
+              pointer. Enjoy!</i
+            >
+          </p>
+        </center>
+        <button class="a-close-button-info">X</button>
+      </div>
+      <div class="a-enter-vr" aframe-injected="">
+        <button
+          class="a-enter-vr-button"
+          title="Enter VR mode with a headset or fullscreen mode on a desktop. Visit https://webvr.rocks or https://webvr.info for more information."
+          aframe-injected=""
+        ></button>
+      </div>
+      <div class="a-enter-ar a-hidden" aframe-injected="">
+        <button
+          class="a-enter-ar-button"
+          title="Enter AR mode with a headset or handheld device. Visit https://webvr.rocks or https://webvr.info for more information."
+          aframe-injected=""
+        ></button>
+      </div>
+      <div class="a-orientation-modal a-hidden" aframe-injected="">
+        <button aframe-injected="">Exit VR</button>
+      </div>
+      <a-entity networked-audio-source="" networked="" id="naf-u3bz9d4"
+        ><a-entity
+          class="cam"
+          gltf-model="#RobotHead"
+          scale="0.004 0.004 0.004"
+          networked=""
+          id="naf-g9csbu0"
+        ></a-entity
+        ><a-entity class="leftController" networked="" id="naf-a4upuve">
+          <a-entity gltf-model="#LHand"></a-entity> </a-entity
+        ><a-entity class="rightController" networked="" id="naf-xn8d2og">
+          <a-entity gltf-model="#RHand"></a-entity> </a-entity></a-entity
+    ></a-scene>
+
+    <script>
+      /*  Important schemas for NAF to function. */
+
+      NAF.schemas.add({
+        template: "#avatar-template",
+        components: ["position", "rotation"]
+      });
+      NAF.schemas.add({
+        template: "#head-template",
+        components: ["position", "rotation"]
+      });
+      NAF.schemas.add({
+        template: "#hand-left",
+        components: ["position", "rotation"]
+      });
+      NAF.schemas.add({
+        template: "#hand-right",
+        components: ["position", "rotation"]
+      });
+      function onConnect() {
+        console.log("connected to a room!");
+      }
+
+      window.onload = function() {
+        var context = new AudioContext();
+      };
+      document.querySelector("button").addEventListener("click", function() {
+        context.resume().then(() => {
+          console.log("Playback resumed successfully");
+        });
+      });
+
+      /*   Video Player script */
+
+      var AVideoPlayer = function() {
+        this.duration = 0;
+        this.current_progress = 0;
+        this.progressWidth = 4;
+        this.paused = true;
+        this.elProgressBar = null;
+        this.elProgressTrack = null;
+        this.elProgressFill = null;
+        this.elAlertSound = null;
+        this.elVideo = null;
+        this.elVideoScreen = null;
+        this.elControlBack = null;
+        this.elControlPlay = null;
+        this.elControlVolume = null;
+        this._initElements = function() {
+          this.elProgressBar = document.getElementById("progress-bar");
+          this.elProgressTrack = document.getElementById("progress-bar-track");
+          this.elProgressFill = document.getElementById("progress-bar-fill");
+          this.elAlertSound = document.getElementById("alert-sound");
+          this.elVideo = document.getElementById("video-src");
+          this.elVideoScreen = document.getElementById("video-screen");
+          this.elControlBack = document.getElementById("control-back");
+          this.elControlPlay = document.getElementById("control-play");
+          this.elControlVolume = document.getElementById("control-volume");
+        };
+
+        this.setProgress = function(progress) {
+          var new_progress = this.progressWidth * progress;
+          this._setProgressWidth(new_progress);
+          var progress_coord = this._getProgressCoord();
+          if (progress_coord != undefined) {
+            progress_coord.x = -(this.progressWidth - new_progress) / 2;
+            this._setProgressCoord(progress_coord);
+          }
+        };
+        this._getProgressCoord = function() {
+          return AFRAME.utils.coordinates.parse(
+            this.elProgressFill.getAttribute("position")
+          );
+        };
+        this._getProgressWidth = function() {
+          return parseFloat(this.elProgressFill.getAttribute("width"));
+        };
+        this._setProgressCoord = function(coord) {
+          this.elProgressFill.setAttribute("position", coord);
+        };
+        this._setProgressWidth = function(width) {
+          this.elProgressFill.setAttribute("width", width);
+        };
+        this.isProgressBarVisible = function(isVisible) {
+          this.elProgressTrack.setAttribute("visible", isVisible);
+          this.elProgressFill.setAttribute("visible", isVisible);
+        };
+        this.isControlVisible = function(isVisible) {
+          this.elControlBack.setAttribute("visible", isVisible);
+          this.elControlVolume.setAttribute("visible", isVisible);
+          this.elVideoScreen.setAttribute("visible", isVisible);
+        };
+        this._addPlayerEvents = function() {
+          var that = this;
+          this.elVideo.pause();
+          this.elVideo.onplay = function() {
+            that.duration = this.duration;
+          };
+          this.elVideo.ontimeupdate = function() {
+            if (that.duration > 0) {
+              that.current_progress = this.currentTime / that.duration;
+            }
+            that.setProgress(that.current_progress);
+          };
+        };
+        this._addControlsEvent = function() {
+          var that = this;
+          this.elControlPlay.addEventListener("click", function() {
+            that._playAudioAlert();
+            if (that.elVideo.paused) {
+              this.setAttribute("src", "#pause");
+              that.elVideo.play();
+              that.paused = false;
+              that.isProgressBarVisible(true);
+              that.isControlVisible(true);
+            } else {
+              this.setAttribute("src", "#play");
+              that.elVideo.pause();
+              that.paused = true;
+              that.isProgressBarVisible(false);
+              //that.isControlVisible(false);
+            }
+          });
+          this.elControlVolume.addEventListener("click", function() {
+            that._playAudioAlert();
+            if (that.elVideo.muted) {
+              that.elVideo.muted = false;
+              this.setAttribute("src", "#volume-normal");
+            } else {
+              that.elVideo.muted = true;
+              this.setAttribute("src", "#volume-mute");
+            }
+          });
+          this.elControlBack.addEventListener("click", function() {
+            that._playAudioAlert();
+            that.elVideo.currentTime = 0;
+          });
+        };
+        this._addProgressEvent = function() {
+          var that = this;
+          this.elProgressBar.addEventListener("click", function(e) {
+            if (
+              e.detail == undefined ||
+              e.detail.intersection == undefined ||
+              that.duration === 0
+            ) {
+              return;
+            }
+            let seekedPosition =
+              (e.detail.intersection.point.x + that.progressWidth / 2) /
+              that.progressWidth;
+            try {
+              let seekedTime = seekedPosition * that.duration;
+              that.elVideo.currentTime = seekedTime;
+            } catch (e) {}
+          });
+        };
+        this._playAudioAlert = function() {
+          if (
+            this.elAlertSound.components !== undefined &&
+            this.elAlertSound.components.sound !== undefined
+          ) {
+            this.elAlertSound.components.sound.playSound();
+          }
+        };
+        this._mobileFriendly = function() {
+          if (AFRAME.utils.device.isMobile()) {
+            var that = this;
+            let video_permission = document.getElementById("video-permission");
+            let video_permission_button = document.getElementById(
+              "video-permission-button"
+            );
+            video_permission.style.display = "block";
+            video_permission_button.addEventListener(
+              "click",
+              function() {
+                video_permission.style.display = "none";
+                that.elVideo.play();
+                that.elVideo.pause();
+              },
+              false
+            );
+          }
+        };
+        this.init = function() {
+          this._initElements();
+          this.setProgress(this.current_progress);
+          this._addPlayerEvents();
+          this._addControlsEvent();
+          this._addProgressEvent();
+          this._mobileFriendly();
+        };
+        this.init();
+      };
+      let scene = document.querySelector("a-scene");
+      var cursor = document.querySelector("a-cursor");
+      scene.lightOff = function() {
+        scene.islightOn = true;
+        scene.removeAttribute("animation__fogback");
+        scene.setAttribute(
+          "animation__fog",
+          "property: fog.color; to: #0c192a; dur: 800; easing: easeInQuad;"
+        );
+      };
+      scene.lightOn = function() {
+        scene.islightOn = false;
+        scene.removeAttribute("animation__fog");
+        scene.setAttribute(
+          "animation__fogback",
+          "property: fog.color; to: #dbdedb; dur: 800"
+        );
+      };
+      var videoPlayer = new AVideoPlayer();
+      document
+        .querySelector("#control-play")
+        .addEventListener("click", function() {
+          if (videoPlayer.paused) {
+            //scene.lightOn()
+          } else {
+            //scene.lightOff();
+          }
+        });
+    </script>
+  </body>
+</html>

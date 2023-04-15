@@ -1,0 +1,9 @@
+<a-entity id="cameraRig" movement-controls="constrainToNavMesh: false;" navigator="cameraRig: #cameraRig; cameraHead: #head; collisionEntities: .collision; ignoreEntities: .clickable" user-height="1.6" rotation="0 0 0" gamepad-controls="" trackpad-controls="" keyboard-controls="" touch-controls="">
+        <!-- camera -->
+        <a-entity id="head" position="0 1.6 0.002" camera="active: true" look-controls="magicWindowTrackingEnabled: false; touchEnabled: false; mouseEnabled: false" rotation=""></a-entity>
+        <!-- Hand controls -->
+              <!-- Left Controller -->
+              <a-entity id="leftHand" hand-controls="hand: left; handModelStyle: lowPoly; color: #15ACCF" teleport-controls="cameraRig: #cameraRig; teleportOrigin: #head; button: trigger; curveShootingSpeed: 18; landingMaxAngle: 60" visible="true" magicleap-controls="" vive-controls="" oculus-touch-controls="" windows-motion-controls=""></a-entity>
+              <!-- Right Controller -->
+              <a-entity id="rightHand" hand-controls="hand: right; handModelStyle: lowPoly; color: #15ACCF" laser-controls="" raycaster="objects: .raycastable, .clickable, a-link; showLine: true; far: 10; interval: 0" line="color: #7cfc00; opacity: 0.5" visible="true" daydream-controls="" gearvr-controls="" magicleap-controls="" oculus-go-controls="" oculus-touch-controls="" valve-index-controls="" vive-controls="" vive-focus-controls="" windows-motion-controls="" generic-tracked-controller-controls=""></a-entity>
+      </a-entity>

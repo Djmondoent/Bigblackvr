@@ -1,0 +1,827 @@
+<html>
+  <head>
+    <meta charset="utf-8" />
+
+    <title>
+      Discover BigBlackVR.com - The Premier Urban VR Experience! | Hold on for
+      just a moment - your immersive journey begins in 60 seconds. Enjoy the
+      ride!
+    </title>
+    <meta
+      name="Big Black VR| FIRST URBAN FRIENDLY VR INTERNET PLATFORM "
+      content="Big Black Internet|The Internet's First Immersive Urban Community Platform"
+    />
+
+    <meta
+      id="viewportMeta"
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=0, user-scalable=no, viewport-fit=cover"
+    />
+
+    <meta name="referrer" content="origin" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
+    <script src="/js/avatars.min.js"></script>
+    <script src="/js/main.js" type="module"></script>
+    <script src="/js/mirror.js"></script>
+    <script src="https://unpkg.com/networked-aframe@^0.10.0/dist/networked-aframe.min.js"></script>
+    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v4.1.2/dist/aframe-extras.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
+
+    <script src="/easyrtc/easyrtc.js"></script>
+
+    <script src="https://rawgit.com/rdub80/aframe-gui/master/dist/aframe-gui.min.js"></script>
+
+    <!--
+
+<script src="https://unpkg.com/aframe-particle-system-component@1.0.5/dist/aframe-particle-system-component.min.js"></script>  
+
+-->
+    <script src="/js/time-year-compent.js"></script>
+    <script src="https://unpkg.com/aframe-html-shader@0.2.0/dist/aframe-html-shader.min.js"></script>
+    <script src="/js/main2.js"></script>
+
+    <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
+    <script src="https://unpkg.com/aframe-websurfaces@1.4.0/dist/aframe-websurfaces.umd.js"></script>
+    <script src="/js/fullbody-avatars.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/c-frame/physx@v0.1.0/dist/physx.min.js"></script>
+    <script src="/js/raycaster-extras.js"></script>
+    <script src="/js/persistent-p2p.component.js"></script>
+    <script src="/js/NetworkEntities.js" type="text/html"></script>
+    <script src="/js/sphere-collider.js" type="text/html"></script>
+    <script src="/js/aframe-extras.controls.min.js" type="text/html"></script>
+    <script src="/js/spawn-in-circle.component.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handy-work@3.1.10/build/handy-controls.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/handy-work@3.1.10/build/magnet-helpers.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/aframe-htmlmesh@2.0.1/build/aframe-html.min.js"></script>
+    <script src="/js/glow.js"></script>
+    <script src="/js/youtube-browser.js"></script>
+    <script src="/js/aframe-super-keyboard.min.js"></script>
+
+    <script>
+      // WebXR requires HTTPS, so the site doesn't work if someone manually enters
+      // the URL and ends up using HTTP. To work around this, force redirect from
+      // http to https for non-localhost addresses.
+      if (
+        window.location.protocol == "http:" &&
+        window.location.hostname != "localhost" &&
+        window.location.hostname != "127.0.0.1" &&
+        window.location.hostname != "[::1]"
+      ) {
+        window.location = window.location.href.replace("http:", "https:");
+      }
+    </script>
+
+    <script>
+      // Define a function to update the view count text
+      function updateViewCount() {
+        // Use fetch to get the count from the server
+        fetch("/viewcount")
+          .then((response) => response.text())
+          .then((count) => {
+            // Update the text value with the retrieved count
+            const text = document.querySelector("a-text");
+            text.setAttribute("value", `Page View Count: ${count}`);
+          });
+      }
+
+      // Call the updateViewCount function on page load
+      window.onload = updateViewCount;
+    </script>
+
+    <script>
+      AFRAME.registerComponent("bitcoin-ticker", {
+        schema: {
+          interval: { type: "number", default: 19000 },
+        },
+
+        init: function () {
+          this.updatePrice = this.updatePrice.bind(this);
+          this.tick = AFRAME.utils.throttleTick(
+            this.tick,
+            this.data.interval,
+            this
+          );
+        },
+
+        updatePrice: async function () {
+          try {
+            const response = await fetch(
+              "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd"
+            );
+            const data = await response.json();
+            this.el.setAttribute(
+              "text",
+              "value",
+              "Bitcoin Price: $" + data.bitcoin.usd.toFixed(2)
+            );
+          } catch (error) {
+            console.error("Error fetching Bitcoin price:", error);
+          }
+        },
+
+        tick: function () {
+          this.updatePrice();
+        },
+      });
+    </script>
+
+    <script>
+      AFRAME.registerComponent("simple-navmesh-constraint", {
+        schema: {
+          enabled: {
+            default: true,
+          },
+          navmesh: {
+            default: "",
+          },
+          fall: {
+            default: 0.5,
+          },
+          height: {
+            default: 1.6,
+          },
+          exclude: {
+            default: "",
+          },
+          xzOrigin: {
+            default: "",
+          },
+        },
+
+        update: function () {
+          this.lastPosition = null;
+          this.excludes = this.data.exclude
+            ? Array.from(document.querySelectorAll(this.data.exclude))
+            : [];
+          const els = Array.from(document.querySelectorAll(this.data.navmesh));
+          if (els === null) {
+            console.warn("navmesh-physics: Did not match any elements");
+            this.objects = [];
+          } else {
+            this.objects = els
+              .map((el) => el.object3D)
+              .concat(this.excludes.map((el) => el.object3D));
+          }
+          this.xzOrigin = this.data.xzOrigin
+            ? this.el.querySelector(this.data.xzOrigin)
+            : this.el;
+        },
+
+        tick: (function () {
+          const nextPosition = new THREE.Vector3();
+          const tempVec = new THREE.Vector3();
+          const scanPattern = [
+            [0, 1], // Default the next location
+            [0, 0.5], // Check that the path to that location was fine
+            [30, 0.4], // A little to the side shorter range
+            [-30, 0.4], // A little to the side shorter range
+            [60, 0.2], // Moderately to the side short range
+            [-60, 0.2], // Moderately to the side short range
+            [80, 0.06], // Perpendicular very short range
+            [-80, 0.06], // Perpendicular very short range
+          ];
+          const down = new THREE.Vector3(0, -1, 0);
+          const raycaster = new THREE.Raycaster();
+          const gravity = -1;
+          const maxYVelocity = 0.5;
+          const results = [];
+          let yVel = 0;
+          let firstTry = true;
+
+          return function tick(time, delta) {
+            if (this.data.enabled === false) return;
+            if (this.lastPosition === null) {
+              firstTry = true;
+              this.lastPosition = new THREE.Vector3();
+              this.xzOrigin.object3D.getWorldPosition(this.lastPosition);
+              if (this.data.xzOrigin)
+                this.lastPosition.y -= this.xzOrigin.object3D.position.y;
+            }
+
+            const el = this.el;
+            if (this.objects.length === 0) return;
+
+            this.xzOrigin.object3D.getWorldPosition(nextPosition);
+            if (this.data.xzOrigin)
+              nextPosition.y -= this.xzOrigin.object3D.position.y;
+            if (nextPosition.distanceTo(this.lastPosition) <= 0.01) return;
+
+            let didHit = false;
+            // So that it does not get stuck it takes as few samples around the user and finds the most appropriate
+            scanPatternLoop: for (const [angle, distance] of scanPattern) {
+              tempVec.subVectors(nextPosition, this.lastPosition);
+              tempVec.applyAxisAngle(down, (angle * Math.PI) / 180);
+              tempVec.multiplyScalar(distance);
+              tempVec.add(this.lastPosition);
+              tempVec.y += maxYVelocity;
+              tempVec.y -= this.data.height;
+              raycaster.set(tempVec, down);
+              raycaster.far =
+                this.data.fall > 0 ? this.data.fall + maxYVelocity : Infinity;
+              raycaster.intersectObjects(this.objects, true, results);
+
+              if (results.length) {
+                // If it hit something we want to avoid then ignore it and stop looking
+                for (const result of results) {
+                  if (this.excludes.includes(result.object.el)) {
+                    results.splice(0);
+                    continue scanPatternLoop;
+                  }
+                }
+                const hitPos = results[0].point;
+                results.splice(0);
+                hitPos.y += this.data.height;
+                if (nextPosition.y - (hitPos.y - yVel * 2) > 0.01) {
+                  yVel += Math.max(gravity * delta * 0.001, -maxYVelocity);
+                  hitPos.y = nextPosition.y + yVel;
+                } else {
+                  yVel = 0;
+                }
+                tempVec.copy(hitPos);
+                this.xzOrigin.object3D.parent.worldToLocal(tempVec);
+                tempVec.sub(this.xzOrigin.object3D.position);
+                if (this.data.xzOrigin)
+                  tempVec.y += this.xzOrigin.object3D.position.y;
+                this.el.object3D.position.add(tempVec);
+
+                this.lastPosition.copy(hitPos);
+                didHit = true;
+                break;
+              }
+            }
+
+            if (didHit) {
+              firstTry = false;
+            }
+
+            if (!firstTry && !didHit) {
+              this.el.object3D.position.copy(this.lastPosition);
+              this.el.object3D.parent.worldToLocal(this.el.object3D.position);
+            }
+            ww;
+          };
+        })(),
+      });
+    </script>
+
+    <!---      A-Frame component named "hover-username".                  --->
+  </head>
+
+  <body>
+    <a-scene
+      loading-screen="dotsColor: red; backgroundColor: black"
+      frame-rate="72"
+      sync
+      position="0 1.6 0"
+      exr-background="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/quarry_04_2k.exr?v=1681433468381"
+      networked-scene="
+  serverURL:https://bigblackvr.glitch.me/;
+  app: bigblackvr;
+  room: basic;
+  connectOnLoad: true;
+  onConnect: onConnect;
+  adapter: easyrtc;
+  audio: true;
+  video: false;
+  debug: true;"
+      raycaster="objects: .raycastable, .clickable "
+      inspector=""
+      persistent-p2p="true"
+      keyboard-shortcuts=""
+      screenshot=""
+      fog=""
+    >
+      <a-assets timeout="10000">
+        <a-asset-item
+          id="bigblackvr"
+          src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/Big%20Black%20VR.glb?v=1680048115355"
+          crossorigin="anonymous"
+        ></a-asset-item>
+
+        <a-asset-item
+          id="readyplayer"
+          src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/readyplayermeavatar.glb?v=1658519663501"
+          crossorigin="anonymous"
+        >
+        </a-asset-item>
+
+        <a-asset-item
+          id="livingroom"
+          src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/sk_fab_test_a.glb?v=1681173836855"
+          crossorigin="anonymous"
+        >
+        </a-asset-item>
+
+        <a-asset-item
+          id="lefthand"
+          src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/leftHandHigh%20(1).glb?v=1659726414863"
+          crossorigin="anonymous"
+        >
+        </a-asset-item>
+
+        <a-asset-item
+          id="righthand"
+          src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/rightHandHigh.glb?v=1659726468303"
+          crossorigin="anonymous"
+        >
+        </a-asset-item>
+        <a-asset-item
+          id="world1"
+          src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/image-portal.glb?v=1680724573889"
+          crossorigin="anonymous"
+        >
+          <a-asset-item
+            id="world2"
+            src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/image-portal%20(2).glb?v=1680724576586"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="world3"
+            src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/image-portal%20(3).glb?v=1680724578802"
+          ></a-asset-item>
+
+          <a-asset-item
+            id="readplayerme"
+            src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/642ce3b3914c5f55933dd192.glb?v=1680724530347"
+          ></a-asset-item>
+        </a-asset-item>
+
+        <img
+          id="grid"
+          src="https://cdn.glitch.com/cb88aa99-1306-429f-9bd6-a868edd0dab9%2Fcs3_lod_2_slod3cs3_lod_2_slod3_5_baseColor.png?v=1620331572942"
+          crossorigin="anonymous"
+        />
+
+        <img
+          id="daylight"
+          src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/HdrSkyCloudy004_JPG_2K.jpg?v=1680399976721"
+          crossorigin="anonymous"
+        />
+
+        <img
+          id="sky"
+          src="https://cdn.glitch.com/cb88aa99-1306-429f-9bd6-a868edd0dab9%2Fnight_360_6k.jpg?v=1631033142777s"
+          crossorigin="anonymous"
+        />
+        <img
+          id="land"
+          src="https://cdn.glitch.com/cb88aa99-1306-429f-9bd6-a868edd0dab9%2FMaterial_766_baseColor.png?v=1621612788071"
+        />
+        <img
+          id="flare"
+          src="https://cdn.glitch.com/cb88aa99-1306-429f-9bd6-a868edd0dab9%2Fadjustflare%20(3).jpg?v=1630532061867"
+          crossorigin="anonymous"
+        />
+
+        <img
+          id="nighttime"
+          src="https://cdn.glitch.com/cb88aa99-1306-429f-9bd6-a868edd0dab9%2Fnight_360_6k.jpg?v=1631033142777"
+          crossorigin="anoymous"
+        />
+
+        <img
+          id="Bigblackinternetvr"
+          src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/bluebigblackinternetvrlogo.glb?v=1658189118618"
+          crossorigin="anonymous"
+        />
+
+        <img
+          id="blackbitcoinbillionaire"
+          src="https://cdn.glitch.com/cb88aa99-1306-429f-9bd6-a868edd0dab9%2FBBB-2nd-article.png?v=1621124758316"
+          crossorigin="anonymous"
+        />
+
+        <img
+          id="keyboard"
+          src="https://cdn.glitch.com/cb88aa99-1306-429f-9bd6-a868edd0dab9%2Fsk-basic.png?v=1622412692224"
+          crossorigin="anonymous"
+        />
+
+        <img
+          id="blackvr3de"
+          src="https://cdn.glitch.com/cb88aa99-1306-429f-9bd6-a868edd0dab9%2Fblack%20bitcoin%20billionaire.png?v=1621993177466"
+          crossorigin="anonymous"
+        />
+
+        <img
+          id="ground"
+          src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/ground.jpg?v=1659634382800"
+          crossorigin="anonymous"
+        />
+
+        <img
+          id="bigblackspin"
+          src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/292207422_550534373416667_7154158739285764861_n.png?v=1658225453333"
+          crossorigin="anonymous"
+        />
+
+        <img
+          id="glaxy"
+          src="https://cdn.glitch.com/cb88aa99-1306-429f-9bd6-a868edd0dab9%2Feso1137a.jpg?v=1630548626698"
+          crossorigin="anonymous"
+        />
+
+        <video
+          crossorigin="anonymous"
+          id="video"
+          src="https://cdn.glitch.com/cb88aa99-1306-429f-9bd6-a868edd0dab9%2Fmpr.mp4?v=1630548791641"
+          playsinline=""
+          webkit-playsinline=""
+        ></video>
+
+        <audio
+          id="travelsound"
+          src="
+      https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/bigblackvrtravelsound_Master.wav?v=1680167351746"
+          crossorigin="anonymous"
+        ></audio>
+
+        <audio
+          id="gameplay2"
+          src="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/backgroundmusic2_Master.wav?v=1680932427607"
+          crossorigin="anonymous"
+        ></audio>
+
+        <audio
+          id="gameplay"
+          src="https://cdn.glitch.me/cb88aa99-1306-429f-9bd6-a868edd0dab9/gameplaymusic_Master.wav?v=1680329030719"
+          crossorigin="anonymous"
+        ></audio>
+
+        <!-- Avatar -->
+        <template id="avatar-template">
+          <a-entity
+            class="avatar"
+            camera="active"
+            persistent="true"
+            networked-audio-source
+            networked="template:#avatar;attachTemplateToLocal:false;"
+            hover-username
+          >
+            <a-entity
+              class="head"
+              scale="1.05 1.05 1.05"
+              camera="active"
+              position="0 1.6 0"
+              avatar="model: #readyplayer"
+              animation-mixer=""
+              rotation="0 180 0"
+            ></a-entity>
+
+            <a-plane
+              color="black"
+              class="namebox"
+              material="src:#ground; repeat:;roughness: 0; metalness: 0.0; transparent: true; side: double;"
+              width="1.1"
+              height="0.4"
+              rotation="0 180 0"
+              position="0 2.18 0"
+              visible=""
+            >
+            </a-plane>
+
+            <a-text
+              id="username"
+              class="nametag"
+              transparent="transparent"
+              color="orange"
+              value="Big Black Vr User"
+              rotation="0 180 0"
+              position="0.40937 2.18 -0.07399"
+              side="double"
+              scale="0.5 0.5 0.5"
+              text=""
+              visible=""
+            ></a-text>
+          </a-entity>
+        </template>
+
+        <template id="left-controller-template">
+          <a-entity
+            tracked-controls="hand: left"
+            raycaster="objects: .raycaster-target, .navMesh .click;"
+            raycaster-extras="controllerListenerId: #controller-data; beamImageSrc: #glaxy; beamLength: 1.5;"
+            temeplate="#left-controller-temlate id: left-controller-template;"
+          >
+          </a-entity>
+        </template>
+
+        <!-- Right-controller template -->
+        <template id="right-controller-template">
+          <a-entity
+            tracked-controls="hand: right"
+            raycaster="objects: .raycaster-target, .navMesh .click;"
+            raycaster-extras="controllerListenerId: #controller-data; beamImageSrc: #glaxy; beamLength: 1.5;"
+            temeplate="#right-controller-temlate id: right-controller-template;"
+          >
+          </a-entity>
+        </template>
+      </a-assets>
+
+      <a-entity
+        id="videoPlayer"
+        geometry="primitive: plane; width: 4; height: 2.25"
+        material="shader: flat; src: https://cdn.glitch.com/cb88aa99-1306-429f-9bd6-a868edd0dab9%2Flab%20test%20(1).mp4?v=1621091723902"
+        position="10.27856 2.52717 -1.63301"
+        rotation="0 -90.76167136887858 0"
+      ></a-entity>
+
+      <a-entity
+        youtube-browser="apiKey: YOUR_API_KEY; query: lilkeed"
+        geometry="primitive: plane; width: 4; height: 2.25"
+        material="shader: flat"
+        position="-10.27856 2.52717 -1.63301"
+        rotation="0 -90.76167136887858 0"
+      ></a-entity>
+
+      <audio id="travelsound1" volume="0.01" autoplay="">
+        <source
+          src=" 
+      https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/bigblackvrtravelsound_Master.wav?v=1680167351746"
+          type="audio/wav"
+        />
+      </audio>
+
+      <audio
+        id="#gameplay"
+        volume="0.01"
+        autoplay="true"
+        src="#gameplay2"
+        type="audio/wav"
+        loop="true"
+      ></audio>
+
+      <!-- experiment with raycasting interval; slight performance improvement but jittery appearance in world -->
+
+      <!-- Left Controller -->
+
+      <!-- Right Controller -->
+      <!-- -->
+
+      <!-- -->
+
+      <!-- -->
+
+      <!-- 
+
+      <a-entity>
+        <a-entity>
+          <canvas
+            class="a-canvas a-grab-cursor"
+            data-aframe-canvas="true"
+            width="345"
+            height="768"
+            style=""
+          ></canvas>
+
+          <a-entity avatar="model: #readyplayer" visible=""></a-entity>
+          <a-entity
+            id="player"
+            position="0 1.6 0"
+            collision
+            networked="template:#avatar-template;attachTemplateToLocal:false;"
+            player-move="controllerListenerId: #controller-data;
+                     navigationMeshClass: navMesh;"
+          >
+            <a-camera
+              position=""
+              rotation=""
+              wasd-controls="fly: true;"
+              networked-audio-source
+              ><a-entity geometry="" material=""></a-entity
+            ></a-camera>
+            <a-entity
+              id="controller-data"
+              controller-listener="leftControllerId:  #lefthand;
+                                 rightControllerId: #righthand;"
+              networked="controller-data"
+            >
+            </a-entity>
+            <a-entity
+              id="#lefthand"
+              networked="template: #left-controller-template;"
+              tracked-controls="hand: left;"
+            >
+            </a-entity>
+            <a-entity
+              id="#righthand"
+              networked="template: #right-controller-template;"
+              tracked-controls="hand: right;"
+            >
+            </a-entity>
+          </a-entity>
+        </a-entity>
+      </a-entity>
+
+      <!--      -->
+      <a-entity
+        position="-8.63647 1.99045 -1.3845"
+        rotation="0 90. 0"
+        geometry="primitive: plane; width: 10; height: 10"
+        aframe-mirror="textureWidth: 1024; textureHeight: 1024; color: #7f7f7f"
+      ></a-entity>
+      <!--
+
+      <a-entity avatar="modelName: #readyplayer" visible="true">
+        <a-entity id="player">
+          <a-entity id="headOffset" position="0 0 0">
+            <a-camera
+              id="head"
+              near="0.1"
+              wasd-controls="fly: true"
+              look-controls
+            ></a-camera>
+          </a-entity>
+          <a-entity
+            id="leftHand"
+            tracked-controls="hand: left; space: gripSpace"
+            smooth-locomotion="active: true"
+          ></a-entity>
+          <a-entity
+            id="rightHand"
+            tracked-controls="hand: right; space: gripSpace"
+          ></a-entity>
+        </a-entity>
+      </a-entity>
+      <!-- living room -->
+
+      <a-entity avatar="model: #readyplayer"></a-entity>
+      <a-entity id="player">
+        <a-camera
+          id="head"
+          near="0.1"
+          wasd-controls=""
+          look-controls
+          networked-audio-source
+          rotation=""
+          position="0 1.6 0"
+          navmesh-physics="#livingroom"
+        ></a-camera>
+
+        <a-entity
+          id="leftHand"
+          tracked-controls="hand: left"
+          move="true"
+        ></a-entity>
+        <a-entity
+          id="rightHand"
+          tracked-controls="hand: right"
+          turn-type="snap"
+        ></a-entity>
+      </a-entity>
+
+      <!-- living room -->
+
+      <a-entity
+        id="#livingroom"
+        gltf-model="#livingroom"
+        position="-25.18389 0.21048 -14.81585"
+        rotation="0 -181.07447 0"
+        scale="-51.92254 34.98415 61.20106"
+        visible=""
+        static-body=""
+      >
+      </a-entity>
+
+      <a-entity
+        gltf-model="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/desktop_computer.glb?v=1681199374380"
+        position="-2.75647 1.09045 -1.08563"
+        rotation="0 85.58442473207646 0"
+      >
+      </a-entity>
+
+      <a-gltf-model
+        src="#bigblackvr"
+        position="-2.83224 1.18953 -1.02086"
+        rotation="0 87.80062548364249 0"
+        scale="0.0032 0.0032 0.0032"
+        glow="scale: 2.3; color: #FF00FF; c: 0.3; p: 3"
+        visible=""
+        gltf-model="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/Big%20Black%20VR.glb?v=1680048115355"
+      >
+      </a-gltf-model>
+
+      <a-text
+        time-display=""
+        position="-2.83224 1.051303 -1.00145"
+        rotation="0 85.58442473207646 0"
+        text="width: 4; color: black; align: center; font: exo2bold; side: double; value: 04/14/2023 02:45"
+        scale="0.17839 0.34039 -1.01999"
+        value=""
+      >
+      </a-text>
+
+      <a-text
+        bitcoin-ticker=""
+        position="-2.83224 1.125999 -1.00145"
+        rotation="0 85.58442473207646 0"
+        text="width: 7; value: Bitcoin price: $30755.00; color: black; align: center; font: exo2bold; side: double"
+        scale="0.10839 0.34039 -1.01999"
+        value=""
+      >
+      </a-text>
+
+      <!-- bigblackvr logo  -->
+
+      <a-plane
+        src="#blackvr3de"
+        scale="8.01087 5.70551 69.03201"
+        visible=""
+        position="-1.06263 2.56227 -11.00039"
+        rotation=""
+        side="double"
+        material=""
+        geometry=""
+      ></a-plane>
+      <!--stage-->
+
+      <!-- Plane menu (Initially hidden) -->
+
+      <!--  Bigblackvr 3d logo  -->
+      <a-gltf-model
+        src="#bigblackvr"
+        position="-1.22435 2.58615 -10.22961"
+        rotation=""
+        scale="0.0384 0.03797 0.08978"
+        glow=" scale: 2.3; color: #FF00FF; c: 0.3; p: 3;"
+        visible=""
+        animation="property: rotation; from: 0 360 0; to: 0 -0 -0; delay: 100; dir: normal; dur: 2900"
+        gltf-model="https://cdn.glitch.global/cb88aa99-1306-429f-9bd6-a868edd0dab9/Big%20Black%20VR.glb?v=1680048115355"
+      >
+      </a-gltf-model>
+
+      <!-- Box -->
+
+      <a-sky id="daylightSky1" src="#daylight" scale="1.5 1.5 1.5 "> </a-sky>
+
+      <!-- Nighttime Sky Sphere 
+      <a-sky
+        id="nighttimeSky"
+        src="#nighttime"
+        rotation="0 90 0"
+        material="transparent: true; opacity: 0;"
+        animation__opacity="property: material.opacity; from: 0; to: 1; dur: 300000; easing: linear; delay: 300000; loop: true;"
+        networked="template: #nighttime-sky-template; id: nighttimeSky;"
+      >
+      </a-sky>
+
+      <!---
+        <a-sky
+          src="#daylight"
+          geometry="primitive: sphere; width: 100; height: 100;"
+          rotation="0 90 0"
+          visible="true"
+          animation="property: rotation; to: 0 360 0; loop: true; dur: 100099.0000999999"
+          animation__visible="property: visible; from: false; to: true; loop: true; dir: normal; delay: 50000; dur: 50000; autoplay: true"
+        >
+        </a-sky>
+      --->
+
+      <a-text
+        position="-0.61108 0.6063775 -11.00064"
+        text="width: 7; color: black; align: center; font: exo2bold; side: double"
+        scale="1.69839 1.34039 5"
+        value=" "
+      ></a-text>
+
+      <a-text
+        bitcoin-ticker=""
+        position="-1 1.5 -11.0"
+        text="width: 7; value: Bitcoin price: $30755.00; color: black; align: center; font: exo2bold; side: double"
+        scale="1.69839 1.34039 5"
+        value=""
+      >
+      </a-text>
+
+      <a-text
+        id="viewCount"
+        position="-1 5.009999 -11.0"
+        rotation="0 0 0"
+        text="width: 4; color: white; align: center; font: exo2bold; side: double; value: 04/14/2023 02:45"
+        scale="1.69839 1.34039 5"
+        value=""
+      >
+      </a-text>
+    </a-scene>
+
+    <!---    sharescreen  
+    <script>
+    
+    navigator.mediaDevices.getDisplayMedia({video: true}).then(function (stream) {
+    easyrtc.register3rdPartyLocalMediaStream(stream, 'screen:1');
+
+    // Then to add to existing connection
+    easyrtc.addStreamToCall(easyrtcId, 'screen:1', function (caller, streamName) {
+
+    });
+});
+    
+    </script>
+  -->
+
+    <!-- -->
+  </body>
+</html>
