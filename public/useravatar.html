@@ -1,0 +1,1289 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="author" content="VRChat Inc." />
+
+    <link rel="icon" href="https://assets.vrchat.com/www/images/favicon.png" />
+
+    <title>VRChat - Home</title>
+
+    <!-- Bootstrap Core CSS -->
+    <link rel="stylesheet" href="/public/css/vrchatstrap.css" type="text/css" />
+
+    <!-- Custom Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css?family=Montserrat:300,400,400i,700"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css?family=Dosis:300,400,400i,700"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://assets.vrchat.com/www/font-awesome/css/font-awesome.min.css"
+      type="text/css"
+    />
+
+    <!-- Plugin CSS -->
+    <link
+      rel="stylesheet"
+      href="https://assets.vrchat.com/www/css/animate.min.css"
+      type="text/css"
+    />
+
+    <!-- Font Awesome Library -->
+    <link
+      rel="stylesheet"
+      href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+      integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+      crossorigin="anonymous"
+    />
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <meta
+      name="description"
+      content="VRChat lets you create, publish, and explore virtual worlds with other people from around the world."
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="VRChatNet" />
+    <meta name="twitter:title" content="VRChat" />
+    <meta
+      name="twitter:description"
+      content="VRChat lets you create, publish, and explore virtual worlds with other people from around the world."
+    />
+    <meta name="twitter:creator" content="VRChatNet" />
+    <meta
+      name="twitter:image"
+      content="https://assets.vrchat.com/www/images/default_social_image.jpg"
+    />
+    <meta
+      name="twitter:image:alt"
+      content="A lineup of virtual reality avatars, waving hello"
+    />
+    <meta name="og:title" content="VRChat" />
+    <meta name="og:type" content="website" />
+    <meta
+      name="og:image"
+      content="https://assets.vrchat.com/www/images/default_social_image.jpg"
+    />
+    <meta
+      name="og:image:alt"
+      content="A lineup of virtual reality avatars, waving hello"
+    />
+    <meta
+      name="og:description"
+      content="VRChat lets you create, publish, and explore virtual worlds with other people from around the world."
+    />
+    <meta name="og:siteName" content="VRChat" />
+
+    <!-- Amplitude -->
+    <script
+      type="text/javascript"
+      async=""
+      src="https://www.gstatic.com/recaptcha/releases/sG0iO6gHcGdWJzjJjW9AY49S/recaptcha__en.js"
+      crossorigin="anonymous"
+      integrity="sha384-+xoUonkPGEYHjXNbLWoTq/M+o6pSjtw4HyuOyq5yVumYnwysETdYuyFwwYTB7S35"
+    ></script>
+    <script
+      async=""
+      src="https://www.google-analytics.com/analytics.js"
+    ></script>
+    <script
+      type="text/javascript"
+      async=""
+      src="https://cdn.amplitude.com/libs/amplitude-4.3.0-min.gz.js"
+    ></script>
+    <script type="text/javascript">
+      (function(e, t) {
+        var n = e.amplitude || { _q: [], _iq: {} };
+        var r = t.createElement("script");
+        r.type = "text/javascript";
+        r.async = true;
+        r.src = "https://cdn.amplitude.com/libs/amplitude-4.3.0-min.gz.js";
+        r.onload = function() {
+          if (e.amplitude.runQueuedFunctions) {
+            e.amplitude.runQueuedFunctions();
+          } else {
+            console.log("[Amplitude] Error: could not load SDK");
+          }
+        };
+        var i = t.getElementsByTagName("script")[0];
+        i.parentNode.insertBefore(r, i);
+        function s(e, t) {
+          e.prototype[t] = function() {
+            this._q.push([t].concat(Array.prototype.slice.call(arguments, 0)));
+            return this;
+          };
+        }
+        var o = function() {
+          this._q = [];
+          return this;
+        };
+        var a = [
+          "add",
+          "append",
+          "clearAll",
+          "prepend",
+          "set",
+          "setOnce",
+          "unset"
+        ];
+        for (var u = 0; u < a.length; u++) {
+          s(o, a[u]);
+        }
+        n.Identify = o;
+        var c = function() {
+          this._q = [];
+          return this;
+        };
+        var l = [
+          "setProductId",
+          "setQuantity",
+          "setPrice",
+          "setRevenueType",
+          "setEventProperties"
+        ];
+        for (var p = 0; p < l.length; p++) {
+          s(c, l[p]);
+        }
+        n.Revenue = c;
+        var d = [
+          "init",
+          "logEvent",
+          "logRevenue",
+          "setUserId",
+          "setUserProperties",
+          "setOptOut",
+          "setVersionName",
+          "setDomain",
+          "setDeviceId",
+          "setGlobalUserProperties",
+          "identify",
+          "clearUserProperties",
+          "setGroup",
+          "logRevenueV2",
+          "regenerateDeviceId",
+          "logEventWithTimestamp",
+          "logEventWithGroups",
+          "setSessionId",
+          "resetSessionId"
+        ];
+        function v(e) {
+          function t(t) {
+            e[t] = function() {
+              e._q.push([t].concat(Array.prototype.slice.call(arguments, 0)));
+            };
+          }
+          for (var n = 0; n < d.length; n++) {
+            t(d[n]);
+          }
+        }
+        v(n);
+        n.getInstance = function(e) {
+          e = (!e || e.length === 0 ? "$default_instance" : e).toLowerCase();
+          if (!n._iq.hasOwnProperty(e)) {
+            n._iq[e] = { _q: [] };
+            v(n._iq[e]);
+          }
+          return n._iq[e];
+        };
+        e.amplitude = n;
+      })(window, document);
+
+      amplitude.getInstance().init("a750df50d11f21f712262cbd4c0bab37");
+      amplitude
+        .getInstance()
+        .setVersionName("master-build-2021-05-27-chalmers-alignbacon");
+      window.vrcAmplitudeLogEvent = function(eventName, properties) {
+        properties.appType = window.isElectron ? "companion" : "web";
+        properties.env = "production";
+        amplitude.getInstance().logEvent(eventName, properties);
+      };
+    </script>
+    <style data-emotion=""></style>
+    <style data-emotion="">
+      .css-ruhbzm .leftbar {
+        padding: 3px;
+        padding-top: 110px;
+        z-index: 5;
+        height: 100%;
+        box-shadow: 5px 0px 20px 20px rgba(255, 255, 255, 0.1);
+      }
+    </style>
+    <style data-emotion="">
+      .css-ruhbzm .rightbar {
+        padding: 3px;
+        padding-top: 110px;
+        z-index: 5;
+        height: 100%;
+        box-shadow: -5px 0px 20px 20px rgba(255, 255, 255, 0.1);
+      }
+    </style>
+    <style data-emotion="">
+      .css-1ie969x {
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1ie969x .navbar-boogie {
+        padding-top: 75px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1ie969x .navbar .btn-group {
+        white-space: normal;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1ie969x .dropdown-menu {
+        margin-top: -5px;
+        padding: 10px 0px 5px 15px;
+        background-color: #506070;
+        border-radius: 0;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1ie969x .search {
+        margin-top: 10px;
+        width: calc(100% - 400px);
+        min-width: 200px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1ie969x .launch {
+        text-transform: uppercase;
+        font-weight: bold;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga {
+        text-align: left;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .usercard {
+        padding: 20px;
+        margin-bottom: 5px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .card .user-img {
+        float: left;
+        margin: 7px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .muteIcons {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .muteIcons .btn {
+        font-size: xx-small;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .user-info {
+        max-width: calc(100% - 120px);
+        min-width: 100px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .user-img {
+        width: 90px;
+        height: 68px;
+        max-width: 100%;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .info-button {
+        position: absolute;
+        top: 5px;
+        right: 5px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga h4 {
+        margin-bottom: 2px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga a {
+        font-weight: bold;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga p {
+        margin-bottom: 0.2em;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .p-l-0 {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .level-moderator {
+        border: 2px solid var(--developer);
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .level-visitor {
+        border: 2px solid var(--level-visitor);
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .level-new {
+        border: 2px solid var(--level-new);
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .level-user {
+        border: 2px solid var(--level-user);
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .level-known {
+        border: 2px solid var(--level-known);
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .level-trusted {
+        border: 2px solid var(--level-trusted);
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .state-online .user-img {
+        border: 2px solid var(--green);
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .state-active .user-img {
+        border: 2px solid var(--yellow);
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .state-active {
+        opacity: 0.9;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .state-offline {
+        opacity: 0.7;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .size-huge .user-img {
+        width: 285px;
+        height: calc(285px * 0.75);
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .size-huge .muteIcons {
+        display: none;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .size-huge .user-bio,
+      .css-3ax2ga .size-huge .user-bio-links {
+        width: 285px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .size-huge .user-bio textarea {
+        min-height: 200px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .size-slim .user-info {
+        max-width: 100%;
+        width: 100%;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .size-wide .muteIcons {
+        top: 17px;
+        left: 4px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .size-wide {
+        padding-top: 2px;
+        padding-bottom: 2px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .size-wide .user-img {
+        width: 60px;
+        height: calc(60px * 0.75);
+        margin-left: 115px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .size-wide .statusDescription,
+      .css-3ax2ga .size-wide .offlineOrOnlineOrWhatever {
+        display: none;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .size-wide .user-info {
+        margin-top: 20px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .user-languages {
+        width: 300px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .language-display-public {
+        width: 285px;
+        text-align: center;
+        vertical-align: middle;
+        padding: 0.5rem 0.75rem;
+        border-radius: 0.25rem;
+        border-color: #f8f9fa;
+        border: 1px solid;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .profile-link {
+        margin-left: -7px;
+        margin-right: -7px;
+        padding-top: 0.5rem;
+      }
+    </style>
+    <style data-emotion="">
+      .css-3ax2ga .extra-margin {
+        margin-left: 10px !important;
+      }
+    </style>
+    <style data-emotion="">
+      @media (max-width: 921px) {
+        .css-3ax2ga .large-display-only {
+          display: none;
+        }
+      }
+    </style>
+    <style data-emotion="">
+      @media (max-width: 991px) and (min-width: 921px) {
+        .css-3ax2ga .small-display-only {
+          display: none;
+        }
+      }
+    </style>
+    <style data-emotion="">
+      @media (max-width: 1578px) and (min-width: 992px) {
+        .css-3ax2ga .large-display-only-2 {
+          display: none;
+        }
+      }
+    </style>
+    <style data-emotion="">
+      @media (min-width: 1579px) {
+        .css-3ax2ga .small-display-only-2 {
+          display: none;
+        }
+      }
+    </style>
+    <style data-emotion="">
+      .css-1lyllzs span {
+        width: 15px;
+        height: 15px;
+        border-radius: 25px;
+        margin-top: 2px;
+        margin-right: 5px;
+        display: inline-block;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1lyllzs .active {
+        background-color: var(--status-online);
+      }
+    </style>
+    <style data-emotion="">
+      .css-1lyllzs .join-me {
+        background-color: var(--status-joinme);
+      }
+    </style>
+    <style data-emotion="">
+      .css-1lyllzs .busy {
+        background-color: var(--status-busy);
+      }
+    </style>
+    <style data-emotion="">
+      .css-1lyllzs .ask-me {
+        background-color: var(--status-askme);
+      }
+    </style>
+    <style data-emotion="">
+      .css-1lyllzs .offline {
+        background-color: grey;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1252und .fa {
+        width: 1.3em;
+      }
+    </style>
+    <style data-emotion="">
+      .css-13ar6hp {
+        margin-bottom: 20px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1o8x0bc {
+        height: 95%;
+        margin-top: 2%;
+        margin-bottom: 2%;
+        overflow-y: scroll;
+        overflow-x: hidden;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1o8x0bc .friend-container {
+        width: 95%;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1o8x0bc .allFriendsLoaded-true {
+        color: var(--success);
+      }
+    </style>
+    <style data-emotion="">
+      .css-1obax3d .search-container {
+        border: 1px solid teal;
+        box-shadow: 10px 10px 8px 10px #111;
+        margin: 20px;
+        padding: 20px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1obax3d .search-container.slim {
+        margin: 5px;
+        padding: 10px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1obax3d .search-container.system_labs {
+        border: 1px solid yellow;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1obax3d .search-container.private {
+        border: 1px solid grey;
+        opacity: 0.5;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1obax3d .search-container a {
+        color: white;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1obax3d .search-container img {
+        border-radius: 5px;
+        max-height: 200px;
+        max-width: 200px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1obax3d .hidden {
+        opacity: 0.4;
+      }
+    </style>
+    <style data-emotion="">
+      .css-1obax3d .private {
+        opacity: 0.8;
+      }
+    </style>
+    <style data-emotion="">
+      .css-15kt0aw div {
+        padding: 10px;
+      }
+    </style>
+    <style data-emotion="">
+      .css-w1bgi6 {
+        float: left;
+        padding: 0 !important;
+      }
+    </style>
+  </head>
+
+  <body id="home">
+    <div id="app" data-is-electron="false">
+      <div>
+        <main>
+          <div class="css-ruhbzm">
+            <div class="css-1ie969x" id="secondary-nav">
+              <div class="navbar-boogie container-fluid">&nbsp;</div>
+              <div
+                class="navbar fixed-top navbar-expand-sm navbar-light shadow bg-primary "
+              >
+                <div class="container-fluid">
+                  <div class="navbar-header d-none d-lg-block">
+                    <a
+                      title="home"
+                      class="btn btn-secondary text-left"
+                      href="/home"
+                      ><span aria-hidden="true" class="fa fa-home"></span></a
+                    >&nbsp;<a class="btn btn-secondary" title="logout" href="#"
+                      ><span class="fa fa-door-open"></span>&nbsp; Logout</a
+                    >
+                  </div>
+                  <div class="d-none d-lg-block search">
+                    <form class="navbar-form navbar-right" role="search">
+                      <div class="form-group">
+                        <div class="input-group">
+                          <input type="text" class="form-control" /><span
+                            class="input-group-append"
+                            ><button
+                              class="btn btn-outline-secondary"
+                              type="submit"
+                            >
+                              <span class="fa fa-search"> </span></button
+                          ></span>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                  <nav class="d-inline d-lg-none">
+                    <div class="btn-group">
+                      <button
+                        type="button"
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        class="dropdown-toggle btn btn-secondary"
+                      >
+                        <span aria-hidden="true" class="fa fa-user"></span>
+                      </button>
+                      <div
+                        tabindex="-1"
+                        role="menu"
+                        aria-hidden="true"
+                        class="dropdown-menu"
+                      >
+                        <div role="group" class="btn-group-vertical">
+                          <a
+                            title="home"
+                            class="btn btn-secondary text-left"
+                            href="/home"
+                            ><span aria-hidden="true" class="fa fa-home"></span
+                            >&nbsp; Home</a
+                          ><a
+                            title="locations"
+                            class="btn btn-secondary text-left"
+                            hidden=""
+                            href="/home/locations"
+                            ><span
+                              aria-hidden="true"
+                              class="fa fa-ticket-alt"
+                            ></span
+                            >&nbsp; Active Friends
+                            <span class="badge badge-secondary">0</span></a
+                          ><a
+                            title="messages"
+                            class="btn btn-secondary text-left"
+                            href="/home/messages"
+                            ><span
+                              aria-hidden="true"
+                              class="fa fa-envelope"
+                            ></span
+                            >&nbsp; Messages <span></span></a
+                          ><a
+                            title="search"
+                            class="btn btn-secondary text-left"
+                            href="/home/search"
+                            ><span
+                              aria-hidden="true"
+                              class="fa fa-search"
+                            ></span
+                            >&nbsp; Search</a
+                          ><a
+                            title="friends"
+                            class="btn btn-secondary text-left"
+                            href="/home/friends"
+                            ><span
+                              aria-hidden="true"
+                              class="fa fa-user-friends"
+                            ></span
+                            >&nbsp; Friends</a
+                          ><a
+                            title="worlds"
+                            class="btn btn-secondary text-left"
+                            href="/home/worlds"
+                            ><span aria-hidden="true" class="fa fa-globe"></span
+                            >&nbsp; Worlds</a
+                          ><a
+                            title="avatars"
+                            class="btn btn-secondary text-left"
+                            href="/home/avatars"
+                            ><span
+                              aria-hidden="true"
+                              class="fa fa-user-secret"
+                            ></span
+                            >&nbsp; Avatars</a
+                          ><a
+                            title="profile"
+                            class="btn btn-secondary text-left"
+                            href="/home/user"
+                            ><span aria-hidden="true" class="fa fa-user"></span
+                            >&nbsp; Profile</a
+                          ><a
+                            title="accountlink"
+                            class="btn btn-secondary text-left"
+                            href="/home/accountlink"
+                            ><span
+                              aria-hidden="true"
+                              class="fa fa-shipping-fast"
+                            ></span
+                            >&nbsp; Account Link</a
+                          >
+                          <hr />
+                          <button
+                            type="button"
+                            title="leave"
+                            class="btn btn-danger text-left btn btn-secondary"
+                          >
+                            <span
+                              aria-hidden="true"
+                              class="fa fa-fa fa-door-open"
+                            ></span
+                            >&nbsp; Logout
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    &nbsp;
+                    <div role="group" class="btn-group-md btn-group">
+                      <a title="home" class="btn btn-secondary" href="/home"
+                        ><span aria-hidden="true" class="fa fa-home"></span></a
+                      ><a
+                        title="locations"
+                        class="btn btn-secondary"
+                        hidden=""
+                        href="/home/locations"
+                        ><span
+                          aria-hidden="true"
+                          class="fa fa-ticket-alt"
+                        ></span
+                        ><span class="badge badge-secondary">0</span></a
+                      ><a
+                        title="messages"
+                        class="btn btn-secondary"
+                        href="/home/messages"
+                        ><span aria-hidden="true" class="fa fa-envelope"></span
+                        >&nbsp; <span></span></a
+                      ><a
+                        title="search"
+                        class="btn btn-secondary"
+                        href="/home/search"
+                        ><span
+                          aria-hidden="true"
+                          class="fa fa-search"
+                        ></span></a
+                      ><a
+                        title="friends"
+                        class="btn btn-secondary"
+                        href="/home/friends"
+                        ><span
+                          aria-hidden="true"
+                          class="fa fa-user-friends"
+                        ></span
+                      ></a>
+                    </div>
+                  </nav>
+                  <div class="d-none d-md-block">
+                    <a
+                      href="vrchat://launch?ref=vrchat.com"
+                      class="launch btn btn-secondary btn-lg"
+                      >&nbsp; Launch</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div></div>
+            <div class="container-fluid">
+              <div class="row">
+                <div
+                  class="d-none d-lg-block fixed-top bg-gradient-secondary leftbar col-2"
+                >
+                  <div class="container-fluid" style="margin-bottom: 1em;">
+                    <div class="row"><div class="col"></div></div>
+                  </div>
+                  <div class="container-fluid" style="margin-bottom: 1em;">
+                    <div class="row" style="min-height: 75px;">
+                      <div class="col">
+                        <div class="css-3ax2ga">
+                          <div
+                            class="usercard friend-false size-slim state-active level-visitor card"
+                          >
+                            <div class="row">
+                              <div>
+                                <a
+                                  title="active"
+                                  href="/home/user/usr_c7568c35-3d05-4b88-be3a-9ac7bb27c7bd"
+                                  ><img
+                                    class="img-thumbnail user-img"
+                                    src="https://assets.vrchat.com/system/defaultAvatarThumbnail.png"
+                                /></a>
+                                <div class="muteIcons">
+                                  <div role="group" class="btn-group">
+                                    <div></div>
+                                    <div></div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="user-info">
+                                <h6>
+                                  <a
+                                    href="/home/user/usr_c7568c35-3d05-4b88-be3a-9ac7bb27c7bd"
+                                    ><span class="css-1lyllzs"
+                                      ><span
+                                        class="active"
+                                        title="active"
+                                      ></span></span
+                                    >djmondoent</a
+                                  >
+                                </h6>
+                                <p class="offlineOrOnlineOrWhatever">
+                                  <em>Active</em>
+                                </p>
+                                <p class="statusDescription"><small></small></p>
+                              </div>
+                            </div>
+                            <div class="profile-link">
+                              <a
+                                class="btn btn-outline-primary d-block"
+                                href="/home/profile"
+                                ><span
+                                  aria-hidden="true"
+                                  class="fa fa-cog"
+                                ></span
+                                >&nbsp; Profile</a
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <nav>
+                    <div
+                      role="group"
+                      class="w-100 css-1252und btn-group-lg btn-group-vertical"
+                    >
+                      <a
+                        title="locations"
+                        class="btn btn-secondary text-left"
+                        hidden=""
+                        href="/home/locations"
+                        ><span
+                          aria-hidden="true"
+                          class="fa fa-ticket-alt"
+                        ></span
+                        >&nbsp; Friend Locations
+                        <span class="badge badge-secondary">0</span></a
+                      ><a
+                        title="download"
+                        class="btn btn-secondary text-left"
+                        href="/home/download"
+                        ><span aria-hidden="true" class="fa fa-download"></span
+                        >&nbsp; Download</a
+                      ><a
+                        title="worlds"
+                        class="btn btn-secondary text-left"
+                        href="/home/worlds"
+                        ><span aria-hidden="true" class="fa fa-globe"></span
+                        >&nbsp; Worlds</a
+                      ><a
+                        title="avatars"
+                        class="btn btn-secondary text-left"
+                        href="/home/avatars"
+                        ><span
+                          aria-hidden="true"
+                          class="fa fa-user-secret"
+                        ></span
+                        >&nbsp; Avatars</a
+                      ><a
+                        title="accountlink"
+                        class="btn btn-secondary text-left"
+                        href="/home/accountlink"
+                        ><span
+                          aria-hidden="true"
+                          class="fa fa-shipping-fast"
+                        ></span
+                        >&nbsp; Account Link</a
+                      ><a
+                        title="playermoderations"
+                        class="btn btn-secondary text-left"
+                        href="/home/playermoderations"
+                        ><span
+                          aria-hidden="true"
+                          class="fa fa-microphone-slash"
+                        ></span
+                        >&nbsp; Blocks &amp; Mutes</a
+                      >
+                    </div>
+                  </nav>
+                  <div class="css-13ar6hp">
+                    <div class="text-center mb-1">
+                      <div role="group" class="btn-group">
+                        <a class="btn btn-outline-primary" href="/home/messages"
+                          ><span
+                            aria-hidden="true"
+                            class="fa fa-envelope"
+                          ></span>
+                          <span class="badge badge-secondary">0</span></a
+                        ><button
+                          type="button"
+                          title="Push Notifications"
+                          class="btn btn-outline-primary"
+                        >
+                          <span aria-hidden="true" class="fa fa-bell"></span
+                          >&nbsp; Push
+                        </button>
+                      </div>
+                    </div>
+                    <div></div>
+                  </div>
+                </div>
+                <div class="offset-lg-2 col-lg-7 col-xs-12 col">
+                  <div class="home-content">
+                    <div>
+                      <div class="center-block text-center">
+                        <h2>Hello there, djmondoent!</h2>
+                        <br /><br />
+                        <div></div>
+                        <br />
+                        <div>
+                          <h3>
+                            <button type="button" class="btn btn-primary">
+                              <span
+                                aria-hidden="true"
+                                class="fa fa-minus-circle"
+                              ></span></button
+                            >&nbsp;Hey, Have You Seen This Completely Random
+                            World?
+                          </h3>
+                          <div class="collapse show">
+                            <div class="row">
+                              <div class="css-1obax3d col-12">
+                                <div
+                                  class="author_tag_mirror author_tag_avatar author_tag_bot author_tag_ybot author_tag_meme system_approved public search-container"
+                                >
+                                  <div class="row">
+                                    <div class="col-12 col-md-4">
+                                      <a
+                                        href="/home/world/wrld_fd963fb6-8a04-44a6-91bb-76eef2824eb1"
+                                        ><img
+                                          class="w-100"
+                                          src="https://api.vrchat.cloud/api/1/image/file_cdc5b22a-466f-4f3f-9826-97c243fa0cd2/3/256"
+                                      /></a>
+                                    </div>
+                                    <div class="col-12 col-md-8">
+                                      <h4>
+                                        <a
+                                          href="/home/world/wrld_fd963fb6-8a04-44a6-91bb-76eef2824eb1"
+                                          >Blake's Avatar World</a
+                                        ><span
+                                          >&nbsp;<small
+                                            >— &nbsp;<a
+                                              href="/home/user/usr_e754fb59-3452-47af-aab1-8cfd832e9123"
+                                              >ExplosiveBlake</a
+                                            ></small
+                                          ></span
+                                        >
+                                      </h4>
+                                      <div class="css-15kt0aw row">
+                                        <div class="col-4 col-sm-3 col-md-3">
+                                          <h6>
+                                            <span
+                                              aria-hidden="true"
+                                              class="fa fa-user"
+                                            ></span
+                                            >&nbsp;Players
+                                          </h6>
+                                          <span>4</span>
+                                        </div>
+                                        <div class="col-4 col-sm-3 col-md-3">
+                                          <h6>
+                                            <span
+                                              aria-hidden="true"
+                                              class="fa fa-star"
+                                            ></span
+                                            >&nbsp;Favorites
+                                          </h6>
+                                          <span>356</span>
+                                        </div>
+                                        <div class="col-4 col-sm-3 col-md-3">
+                                          <h6>
+                                            <span
+                                              aria-hidden="true"
+                                              class="fa fa-thermometer-empty"
+                                            ></span
+                                            >&nbsp;Heat
+                                          </h6>
+                                          <span
+                                            ><span
+                                              aria-hidden="true"
+                                              class="fa fa-fire"
+                                            ></span
+                                            ><span
+                                              aria-hidden="true"
+                                              class="fa fa-fire"
+                                            ></span
+                                            ><span
+                                              aria-hidden="true"
+                                              class="fa fa-fire"
+                                            ></span
+                                            ><span
+                                              aria-hidden="true"
+                                              class="fa fa-fire"
+                                            ></span
+                                          ></span>
+                                        </div>
+                                        <div class="col-4 col-sm-3 col-md-3">
+                                          <h6>
+                                            <span
+                                              aria-hidden="true"
+                                              class="fa fa-users"
+                                            ></span>
+                                            &nbsp;Capacity
+                                          </h6>
+                                          <span>12</span>
+                                        </div>
+                                        <div class="col-4 col-sm-3 col-md-3">
+                                          <h6>
+                                            <span
+                                              aria-hidden="true"
+                                              class="fa fa-plus-square"
+                                            ></span
+                                            >&nbsp; Created
+                                          </h6>
+                                          <span>03/09/2021</span>
+                                        </div>
+                                        <div class="col-4 col-sm-3 col-md-3">
+                                          <h6>
+                                            <span
+                                              title="favorites"
+                                              aria-hidden="true"
+                                              class="fa fa-flask"
+                                            ></span
+                                            >&nbsp; Labs'd
+                                          </h6>
+                                          <span>03/09/2021</span>
+                                        </div>
+                                        <div class="col-4 col-sm-3 col-md-3">
+                                          <h6>
+                                            <span
+                                              title="favorites"
+                                              aria-hidden="true"
+                                              class="fa fa-bullhorn"
+                                            ></span
+                                            >&nbsp; Published
+                                          </h6>
+                                          <span>04/26/2021</span>
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-6">
+                                          <div class="tags">
+                                            <span
+                                              >&nbsp;<span
+                                                class="tag-badge badge badge-secondary"
+                                                ><div class="css-w1bgi6">
+                                                  <span
+                                                    title="mirror"
+                                                    aria-hidden="true"
+                                                    class="fa fa-tag"
+                                                  ></span>
+                                                </div>
+                                                <a
+                                                  href="/home/search/tag:author_tag_mirror"
+                                                  ><span>mirror</span></a
+                                                ></span
+                                              ></span
+                                            ><span
+                                              >&nbsp;<span
+                                                class="tag-badge badge badge-secondary"
+                                                ><div class="css-w1bgi6">
+                                                  <span
+                                                    title="avatar"
+                                                    aria-hidden="true"
+                                                    class="fa fa-tag"
+                                                  ></span>
+                                                </div>
+                                                <a
+                                                  href="/home/search/tag:author_tag_avatar"
+                                                  ><span>avatar</span></a
+                                                ></span
+                                              ></span
+                                            ><span
+                                              >&nbsp;<span
+                                                class="tag-badge badge badge-secondary"
+                                                ><div class="css-w1bgi6">
+                                                  <span
+                                                    title="bot"
+                                                    aria-hidden="true"
+                                                    class="fa fa-tag"
+                                                  ></span>
+                                                </div>
+                                                <a
+                                                  href="/home/search/tag:author_tag_bot"
+                                                  ><span>bot</span></a
+                                                ></span
+                                              ></span
+                                            ><span
+                                              >&nbsp;<span
+                                                class="tag-badge badge badge-secondary"
+                                                ><div class="css-w1bgi6">
+                                                  <span
+                                                    title="ybot"
+                                                    aria-hidden="true"
+                                                    class="fa fa-tag"
+                                                  ></span>
+                                                </div>
+                                                <a
+                                                  href="/home/search/tag:author_tag_ybot"
+                                                  ><span>ybot</span></a
+                                                ></span
+                                              ></span
+                                            ><span
+                                              >&nbsp;<span
+                                                class="tag-badge badge badge-secondary"
+                                                ><div class="css-w1bgi6">
+                                                  <span
+                                                    title="meme"
+                                                    aria-hidden="true"
+                                                    class="fa fa-tag"
+                                                  ></span>
+                                                </div>
+                                                <a
+                                                  href="/home/search/tag:author_tag_meme"
+                                                  ><span>meme</span></a
+                                                ></span
+                                              ></span
+                                            >
+                                          </div>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="text-center col-md-3">
+                                <button type="button" class="btn btn-primary">
+                                  <div class="visible">Load More Worlds</div>
+                                  <div
+                                    class="invisible"
+                                    style="margin-top: -1.25em;"
+                                  >
+                                    <span
+                                      aria-hidden="true"
+                                      class="fa fa-spinner fa-spin"
+                                    ></span>
+                                  </div>
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                          <hr />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div
+                  class="d-none d-lg-block fixed-top bg-gradient-secondary rightbar col-3 offset-9"
+                >
+                  <div class="css-1o8x0bc">
+                    <div class="friend-container">
+                      <h3>
+                        Friends <small class="allFriendsLoaded-true">0/0</small>
+                      </h3>
+                      <div>
+                        <input class="w-100" />
+                        <hr />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+      </div>
+    </div>
+
+    <!-- jQuery -->
+    <script
+      src="https://code.jquery.com/jquery-2.2.4.min.js"
+      integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="/client/home/public/index.js?build=master-build-2021-05-27-chalmers-alignbacon"></script>
+    <script
+      src="https://www.google.com/recaptcha/api.js"
+      async=""
+      defer=""
+    ></script>
+
+    <!-- Google Analytics -->
+    <script>
+      (function(i, s, o, g, r, a, m) {
+        i["GoogleAnalyticsObject"] = r;
+        (i[r] =
+          i[r] ||
+          function() {
+            (i[r].q = i[r].q || []).push(arguments);
+          }),
+          (i[r].l = 1 * new Date());
+        (a = s.createElement(o)), (m = s.getElementsByTagName(o)[0]);
+        a.async = 1;
+        a.src = g;
+        m.parentNode.insertBefore(a, m);
+      })(
+        window,
+        document,
+        "script",
+        "https://www.google-analytics.com/analytics.js",
+        "ga"
+      );
+
+      ga("create", "UA-88994415-1", "auto");
+      ga("send", "pageview");
+    </script>
+
+    <script defer="" type="text/javascript">
+      window.vrcAmplitudeLogEvent &&
+        window.vrcAmplitudeLogEvent("Web_PageView", { url: location.pathname });
+    </script>
+  </body>
+</html>
+
+<!--
+<a-entity networked-audio-source="" networked="" id="naf-gxl603t"><a-entity class="cam" gltf-model="#RobotHead" scale="0.004 0.004 0.004" networked="" id="naf-afkjx0m"></a-entity><a-entity class="leftController" networked="" id="naf-asyekch">
+            <!-- <a-box class="box" scale="0.1 0.1 0.1"></a-box> 
+            <a-entity gltf-model="#LHand"></a-entity>
+          </a-entity><a-entity class="rightController" networked="" id="naf-i79aypz">
+            <!-- <a-box class="box" scale="0.1 0.1 0.1"></a-box> 
+            <a-entity gltf-model="#RHand"></a-entity>
+          </a-entity></a-entity>
+          
+          -->

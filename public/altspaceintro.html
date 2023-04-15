@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+  
+    <head>
+        <script src="https://cdn.rawgit.com/mrdoob/three.js/r84/build/three.js"></script>
+        <script src="https://sdk.altvr.com/libs/altspace.js/2.9.0/altspace.min.js"></script>
+    </head>
+    <body>
+        <script>
+        // wraps up the renderer, scene, and animation loop
+        var sim = new altspace.utilities.Simulation();
+
+        // create a green cube 200 pixels in size
+        var cube = new THREE.Mesh(
+            new THREE.BoxGeometry(200, 200, 200),
+            new THREE.MeshBasicMaterial({color: 0x00ff00})
+        );
+        sim.scene.add(cube);
+
+        // attach a spin behavior to make it rotate over time
+        cube.addBehavior( new altspace.utilities.behaviors.Spin() );
+        </script>
+    </body>
+</html>

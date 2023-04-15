@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>get</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <style>
+      body {
+        font-family: Monospace;
+        background-color: #101010;
+        color: #fff;
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
+      a {
+        color: #48f;
+      }
+    </style>
+
+    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.slim.js"></script>
+    <script src="/easyrtc/easyrtc.js"></script>
+    <script src="/dist/networked-aframe.js"></script>
+    
+    
+    
+    
+    
+    
+    
+  </head>
+
+  <body>
+    <script type="module">
+      import * as THREE from "https://unpkg.com/three@0.111.0/build/three.module.js";
+      import { OBJLoader } from "https://unpkg.com/three@0.111.0/examples/jsm/loaders/OBJLoader.js";
+      import { VRButton } from "https://unpkg.com/three@0.111.0/examples/jsm/webxr/VRButton.js";
+
+      var container;
+      var camera, scene, renderer;
+      var controller1, controller2;
+
+      var room;
+
+      var count = 0;
+      var normal = new THREE.Vector3();
+      var relativeVelocity = new THREE.Vector3();
+
+      var clock = new THREE.Clock();
+
+      init();
+      animate();
+
+      function init() {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        var info = document.createElement("div");
+        info.style.position = "absolute";
+        info.style.top = "10px";
+        info.style.width = "100%";
+        info.style.textAlign = "center";
+        info.innerHTML =
+          '<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> vr - make it rain<br><a href="https://poly.google.com/view/btWmPNVSKUc" target="_blank">hand</a> by poly';
+        container.appendChild(info);
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x404040);
+        scene.fog = new THREE.Fog(scene.background, 10, 15);
+
+        camera = new THREE.PerspectiveCamera(
+          70,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          20
+        );
+        camera.position.set(0, 1.6, 0);
+
+        var geometry = new THREE.PlaneBufferGeometry(15, 15);
+        geometry.rotateX(-Math.PI / 2);
+        geometry.translate(0, -0.01, 0);
+        var material = new THREE.MeshBasicMaterial({ color: 0x202020 });
+        room = new THREE.Mesh(geometry, material);
+        scene.add(room);
+
+        // money
+
+        var geometry = new THREE.PlaneBufferGeometry(0.2, 0.09);
+        geometry.rotateZ(Math.PI / 2);
+        geometry.rotateX(-Math.PI / 2);
+
+        var texture = new THREE.TextureLoader().load(
+          "https://cdn.glitch.com/cf086db5-7af7-4f20-8220-93d1d99150b7%2F100_dollar_bill_vector.png?1558543607686"
+        );
+        texture.anisotropy = 8;
+
+        var material = new THREE.MeshBasicMaterial({
+          map: texture,
+          side: THREE.DoubleSide
+        });
+
+        for (var i = 0; i < 400; i++) {
+          var object = new THREE.Mesh(geometry, material);
+
+          object.position.x = random() * 8;
+          object.position.y = Math.random() * 6;
+          object.position.z = random() * 8;
+          object.rotation.y = random() * Math.PI * 2;
+
+          object.userData.velocity = new THREE.Vector3();
+          object.userData.velocity.x = random() * 0.01;
+          object.userData.velocity.y = random() * 0.01;
+          object.userData.velocity.z = random() * 0.01;
+
+          object.userData.noise = random() * 0.1;
+
+          room.add(object);
+        }
+
+        //
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.vr.enabled = true;
+        container.appendChild(renderer.domElement);
+
+        //
+
+        document.body.appendChild(VRButton.createButton(renderer));
+
+        // controllers
+
+        function onSelectStart() {
+          this.userData.isSelecting = true;
+        }
+
+        function onSelectEnd() {
+          this.userData.isSelecting = false;
+        }
+
+        // TODO: Update this code to r112
+
+        controller1 = renderer.vr.getController(0);
+        // controller1.addEventListener( 'selectstart', onSelectStart );
+        // controller1.addEventListener( 'selectend', onSelectEnd );
+        scene.add(controller1);
+
+        controller2 = renderer.vr.getController(1);
+        controller2.addEventListener("selectstart", onSelectStart);
+        controller2.addEventListener("selectend", onSelectEnd);
+        scene.add(controller2);
+
+        // hands
+
+        var file =
+          "https://cdn.glitch.com/7ae766be-18fb-4945-ad9d-8cc3be027694%2Fhand.obj?1558677422910";
+
+        var loader = new OBJLoader();
+        loader.load(file, function(group) {
+          // console.log( group.children[ 0 ] );
+
+          var texture = new THREE.TextureLoader().load(
+            "https://cdn.glitch.com/7ae766be-18fb-4945-ad9d-8cc3be027694%2FBazC_SkinMat.jpg?1558678160164"
+          );
+
+          var mesh = group.children[0];
+          mesh.geometry.rotateZ(-Math.PI / 2);
+          mesh.geometry.rotateY(Math.PI);
+          mesh.geometry.translate(1, -0.2, 0.25);
+          mesh.geometry.scale(0.1, 0.1, 0.1);
+          mesh.material = new THREE.MeshMatcapMaterial({ matcap: texture });
+
+          mesh.scale.x = -1;
+
+          controller1.add(mesh.clone());
+
+          mesh.scale.x = 1;
+
+          for (var i = 0; i < 10; i++) {
+            var bill = room.children[0].clone();
+            bill.position.set(i * 0.003 + 0.02, -0.05, 0);
+            bill.rotation.set(random() * 0.3, random() * 0.1, -Math.PI / 2);
+            mesh.add(bill);
+          }
+
+          controller2.add(mesh.clone());
+        });
+
+        //
+
+        window.addEventListener("resize", onWindowResize, false);
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      function handleController(controller) {
+        if (controller.userData.isSelecting) {
+          var object = room.children[count++];
+
+          var emitter = controller.children[0].children[9];
+          emitter.matrixWorld.decompose(
+            object.position,
+            object.quaternion,
+            object.scale
+          );
+
+          object.userData.velocity.x = random();
+          object.userData.velocity.y = random() + 0.5;
+          object.userData.velocity.z = Math.random() - 5;
+          object.userData.velocity.applyQuaternion(object.quaternion);
+
+          object.userData.noise = random() * 0.1;
+
+          if (count === room.children.length) count = 0;
+        }
+      }
+
+      //
+
+      function animate() {
+        renderer.setAnimationLoop(render);
+      }
+
+      function render() {
+        handleController(controller1);
+        handleController(controller2);
+
+        //
+
+        var delta = clock.getDelta() * 0.5; // slow down simulation
+
+        for (var i = 0; i < room.children.length; i++) {
+          var object = room.children[i];
+
+          var userData = object.userData;
+          var velocity = userData.velocity;
+
+          object.position.x += velocity.x * delta;
+          object.position.y += velocity.y * delta;
+          object.position.z += velocity.z * delta;
+
+          // flatten rotation
+
+          object.rotation.x *= 0.99;
+          object.rotation.z *= 0.99;
+
+          // handle floor
+
+          if (object.position.y <= 0) {
+            object.position.y = 0;
+
+            velocity.x *= 0.85;
+            velocity.y = 0;
+            velocity.z *= 0.85;
+          }
+
+          var height = object.position.y * 0.1;
+
+          if (height > 0) {
+            velocity.x += userData.noise * height;
+            velocity.y -= 9.8 * delta;
+            velocity.z += userData.noise * height;
+            object.rotation.y += userData.noise * height;
+          }
+        }
+
+        renderer.render(scene, camera);
+      }
+
+      function random() {
+        return Math.random() - 0.5;
+      }
+    </script>
+
+    <a-video
+      id="video-screen"
+      src="https://www.youtube.com/watch?v=yRsgm0cFgq0"
+      position="-1.02132 0.89195 -0.56798"
+      rotation="0 0 0"
+      scale="1.50761 1.49394 1"
+      width="8"
+      height="8"
+      visible="true"
+      material=""
+      geometry=""
+    ></a-video>
+  </body>
+</html>

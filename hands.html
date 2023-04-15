@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>three.js vr - make it rain</title>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, user-scalable=no"
+    />
+    <style>
+      body {
+        font-family: Monospace;
+        background-color: #101010;
+        color: #fff;
+        margin: 0;
+      }
+      canvas {
+        display: block;
+      }
+      a {
+        color: #48f;
+      }
+    </style>
+  </head>
+  <body>
+    <script type="module">
+      import * as THREE from "https://unpkg.com/three@0.119.0/build/three.module.js";
+      import { VRButton } from "https://unpkg.com/three@0.119.0/examples/jsm/webxr/VRButton.js";
+      import { XRHandModelFactory } from "https://unpkg.com/three@0.119.0/examples/jsm/webxr/XRHandModelFactory.js";
+
+      var container;
+      var camera, scene, renderer;
+      var controller1, controller2;
+
+      var room;
+
+      var count = 0;
+      var normal = new THREE.Vector3();
+      var relativeVelocity = new THREE.Vector3();
+
+      var clock = new THREE.Clock();
+
+      init();
+      animate();
+
+      function init() {
+        container = document.createElement("div");
+        document.body.appendChild(container);
+
+        var info = document.createElement("div");
+        info.style.position = "absolute";
+        info.style.top = "10px";
+        info.style.width = "100%";
+        info.style.textAlign = "center";
+        info.innerHTML =
+          '<a href="https://threejs.org" target="_blank" rel="noopener">three.js</a> vr - make it rain';
+        container.appendChild(info);
+
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x404040);
+        scene.fog = new THREE.Fog(scene.background, 10, 15);
+
+        camera = new THREE.PerspectiveCamera(
+          70,
+          window.innerWidth / window.innerHeight,
+          0.1,
+          20
+        );
+        camera.position.set(0, 1.6, 0);
+
+        var geometry = new THREE.PlaneBufferGeometry(15, 15);
+        geometry.rotateX(-Math.PI / 2);
+        geometry.translate(0, -0.01, 0);
+        var material = new THREE.MeshBasicMaterial({ color: 0x202020 });
+        room = new THREE.Mesh(geometry, material);
+        scene.add(room);
+
+        // money
+
+        var geometry = new THREE.PlaneBufferGeometry(0.2, 0.09);
+        geometry.rotateZ(Math.PI / 2);
+        geometry.rotateX(-Math.PI / 2);
+
+        var texture = new THREE.TextureLoader().load(
+          "https://cdn.glitch.com/cf086db5-7af7-4f20-8220-93d1d99150b7%2F100_dollar_bill_vector.png?1558543607686"
+        );
+        texture.anisotropy = 8;
+
+        var material = new THREE.MeshBasicMaterial({
+          map: texture,
+          side: THREE.DoubleSide
+        });
+
+        for (var i = 0; i < 400; i++) {
+          var object = new THREE.Mesh(geometry, material);
+
+          object.position.x = random() * 8;
+          object.position.y = Math.random() * 6;
+          object.position.z = random() * 8;
+          object.rotation.y = random() * Math.PI * 2;
+
+          object.userData.velocity = new THREE.Vector3();
+          object.userData.velocity.x = random() * 0.01;
+          object.userData.velocity.y = random() * 0.01;
+          object.userData.velocity.z = random() * 0.01;
+
+          object.userData.noise = random() * 0.1;
+
+          room.add(object);
+        }
+
+        //
+
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setPixelRatio(window.devicePixelRatio);
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.xr.enabled = true;
+        container.appendChild(renderer.domElement);
+
+        //
+
+        document.body.appendChild(VRButton.createButton(renderer));
+
+        // Hands
+
+        var handModelFactory = new XRHandModelFactory();
+        handModelFactorey.setPath(
+          "https://unpkg.com/three@0.119.0/examples/models/fbx/"
+        );
+
+        function onConnected(event) {
+          if (event.data.handedness === "left") {
+            for (var i = 0; i < 10; i++) {
+              var bill = room.children[0].clone();
+              bill.position.set(i * 0.003 + 0.02, -0.05, 0);
+              bill.rotation.set(random() * 0.3, random() * 0.1, -Math.PI / 2);
+              this.add(bill);
+            }
+          }
+        }
+
+        var hand1 = renderer.xr.getHand(0);
+        hand1.addEventListener("connected", onConnected);
+        hand1.add(handModelFactory.createHandModel(hand1, "oculus"));
+        scene.add(hand1);
+
+        var hand2 = renderer.xr.getHand(1);
+        hand2.addEventListener("connected", onConnected);
+        hand2.add(handModelFactory.createHandModel(hand2, "oculus"));
+        scene.add(hand2);
+
+        //
+
+        window.addEventListener("resize", onWindowResize, false);
+      }
+
+      function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }
+
+      /*
+			function handleController( controller ) {
+
+				if ( controller.userData.isSelecting ) {
+          
+					var object = room.children[ count ++ ];
+
+          var emitter = controller.children[ 0 ].children[ 9 ];
+          emitter.matrixWorld.decompose( object.position, object.quaternion, object.scale );
+
+					object.userData.velocity.x = random();
+					object.userData.velocity.y = random() + 0.5;
+					object.userData.velocity.z = Math.random() - 5;					
+          object.userData.velocity.applyQuaternion( object.quaternion );
+          
+          object.userData.noise = random() * 0.1;
+
+					if ( count === room.children.length ) count = 0;
+
+				}
+
+			}
+      */
+
+      //
+
+      function animate() {
+        renderer.setAnimationLoop(render);
+      }
+
+      function render() {
+        // handleController( controller1 );
+        // handleController( controller2 );
+
+        //
+
+        var delta = clock.getDelta() * 0.5; // slow down simulation
+
+        for (var i = 0; i < room.children.length; i++) {
+          var object = room.children[i];
+
+          var userData = object.userData;
+          var velocity = userData.velocity;
+
+          object.position.x += velocity.x * delta;
+          object.position.y += velocity.y * delta;
+          object.position.z += velocity.z * delta;
+
+          // flatten rotation
+
+          object.rotation.x *= 0.99;
+          object.rotation.z *= 0.99;
+
+          // handle floor
+
+          if (object.position.y <= 0) {
+            object.position.y = 0;
+
+            velocity.x *= 0.85;
+            velocity.y = 0;
+            velocity.z *= 0.85;
+          }
+
+          var height = object.position.y * 0.1;
+
+          if (height > 0) {
+            velocity.x += userData.noise * height;
+            velocity.y -= 9.8 * delta;
+            velocity.z += userData.noise * height;
+            object.rotation.y += userData.noise * height;
+          }
+        }
+
+        renderer.render(scene, camera);
+      }
+
+      function random() {
+        return Math.random() - 0.5;
+      }
+    </script>
+  </body>
+</html>

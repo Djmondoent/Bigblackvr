@@ -1,0 +1,64 @@
+<script src="https://aframe.io/releases/0.6.0/aframe.min.js"></script>
+<!--<script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>-->
+
+<script>
+  AFRAME.registerComponent("draw-canvas", {
+    init: function () {
+      this.canvas = document.getElementById("canvas");
+      this.ctx = this.canvas.getContext("2d");
+
+      this.w = this.canvas.width = document.body.offsetWidth;
+      this.h = this.canvas.height = document.body.offsetHeight;
+      this.cols = Math.floor(this.w / 20) + 1;
+      this.ypos = Array(this.cols).fill(0);
+
+      this.ctx.fillStyle = "#000";
+      this.ctx.fillRect(0, 0, this.w, this.h);
+    },
+
+    tick: function (t) {
+      if (t - this.time < 100) {
+        return;
+      }
+
+      this.ctx.fillStyle = "#0001";
+      this.ctx.fillRect(0, 0, this.w, this.h);
+
+      this.ctx.fillStyle = "#0f0";
+      this.ctx.font = "15pt monospace";
+
+      this.ypos.forEach((y, ind) => {
+        this.text = String.fromCharCode(Math.random() * 128);
+        this.x = ind * 20;
+
+        this.ctx.fillText(this.text, this.x, y);
+
+        if (y > 100 + Math.random() * 10000) this.ypos[ind] = 0;
+        else this.ypos[ind] = y + 20;
+      });
+    },
+  });
+</script>
+
+<a-scene>
+  <a-assets>
+    <canvas id="canvas"></canvas>
+  </a-assets>
+  <a-plane
+    draw-canvas
+    position="0 -55 0"
+    rotation="-90 0 0"
+    width="1000"
+    height="1000"
+    material="src:#canvas"
+    nav-agent="1.5"
+  ></a-plane>
+  <a-plane
+    draw-canvas
+    position="0 -0 -740"
+    rotation="-0 0 0"
+    width="10000"
+    height="10000"
+    material="src:#canvas"
+  ></a-plane>
+</a-scene>
