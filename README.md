@@ -22,9 +22,8 @@ VR headset (optional, but recommended for an immersive experience)
 Installation
 Clone the repository to your local machine:
 
-bash
-Copy code
-git clone https://github.com/Djmondoent/bigblackvr.git 
+git clone https://github.com/Djmondoent/bigblackvr.git
+
 Usage
 Open the index.html file in a WebVR supported browser.
 Put on your VR headset (optional) and enjoy the immersive experience.

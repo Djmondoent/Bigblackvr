@@ -19,13 +19,13 @@
 
     <meta name="referrer" content="origin" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
+    <script src="https://aframe.io/releases/1.4.0/aframe.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js"></script>
     <script src="/js/avatars.min.js"></script>
     <script src="/js/main.js" type="module"></script>
     <script src="/js/mirror.js"></script>
     <script src="https://unpkg.com/networked-aframe@^0.10.0/dist/networked-aframe.min.js"></script>
-    <script src="https://cdn.rawgit.com/donmccurdy/aframe-extras/v4.1.2/dist/aframe-extras.min.js"></script>
+    <script src="http://cdn.rawgit.com/donmccurdy/aframe-extras/v4.1.2/dist/aframe-extras.min.js"></script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.5.0/socket.io.slim.js"></script>
 
@@ -40,23 +40,20 @@
 -->
     <script src="/js/time-year-compent.js"></script>
     <script src="https://unpkg.com/aframe-html-shader@0.2.0/dist/aframe-html-shader.min.js"></script>
-    <script src="/js/main2.js"></script>
 
     <script src="https://unpkg.com/super-hands/dist/super-hands.min.js"></script>
-    <script src="https://unpkg.com/aframe-websurfaces@1.4.0/dist/aframe-websurfaces.umd.js"></script>
-    <script src="/js/fullbody-avatars.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/c-frame/physx@v0.1.0/dist/physx.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/aframe-exokit-avatars@1.0.2"></script>
+
     <script src="/js/raycaster-extras.js"></script>
     <script src="/js/persistent-p2p.component.js"></script>
     <script src="/js/NetworkEntities.js" type="text/html"></script>
     <script src="/js/sphere-collider.js" type="text/html"></script>
     <script src="/js/aframe-extras.controls.min.js" type="text/html"></script>
     <script src="/js/spawn-in-circle.component.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/handy-work@3.1.10/build/handy-controls.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/handy-work@3.1.10/build/magnet-helpers.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/aframe-htmlmesh@2.0.1/build/aframe-html.min.js"></script>
+
     <script src="/js/glow.js"></script>
-    <script src="/js/youtube-browser.js"></script>
+
     <script src="/js/aframe-super-keyboard.min.js"></script>
 
     <script>
@@ -93,7 +90,7 @@
     <script>
       AFRAME.registerComponent("bitcoin-ticker", {
         schema: {
-          interval: { type: "number", default: 19000 },
+          interval: { type: "number", default: 2000 },
         },
 
         init: function () {
@@ -124,145 +121,6 @@
         tick: function () {
           this.updatePrice();
         },
-      });
-    </script>
-
-    <script>
-      AFRAME.registerComponent("simple-navmesh-constraint", {
-        schema: {
-          enabled: {
-            default: true,
-          },
-          navmesh: {
-            default: "",
-          },
-          fall: {
-            default: 0.5,
-          },
-          height: {
-            default: 1.6,
-          },
-          exclude: {
-            default: "",
-          },
-          xzOrigin: {
-            default: "",
-          },
-        },
-
-        update: function () {
-          this.lastPosition = null;
-          this.excludes = this.data.exclude
-            ? Array.from(document.querySelectorAll(this.data.exclude))
-            : [];
-          const els = Array.from(document.querySelectorAll(this.data.navmesh));
-          if (els === null) {
-            console.warn("navmesh-physics: Did not match any elements");
-            this.objects = [];
-          } else {
-            this.objects = els
-              .map((el) => el.object3D)
-              .concat(this.excludes.map((el) => el.object3D));
-          }
-          this.xzOrigin = this.data.xzOrigin
-            ? this.el.querySelector(this.data.xzOrigin)
-            : this.el;
-        },
-
-        tick: (function () {
-          const nextPosition = new THREE.Vector3();
-          const tempVec = new THREE.Vector3();
-          const scanPattern = [
-            [0, 1], // Default the next location
-            [0, 0.5], // Check that the path to that location was fine
-            [30, 0.4], // A little to the side shorter range
-            [-30, 0.4], // A little to the side shorter range
-            [60, 0.2], // Moderately to the side short range
-            [-60, 0.2], // Moderately to the side short range
-            [80, 0.06], // Perpendicular very short range
-            [-80, 0.06], // Perpendicular very short range
-          ];
-          const down = new THREE.Vector3(0, -1, 0);
-          const raycaster = new THREE.Raycaster();
-          const gravity = -1;
-          const maxYVelocity = 0.5;
-          const results = [];
-          let yVel = 0;
-          let firstTry = true;
-
-          return function tick(time, delta) {
-            if (this.data.enabled === false) return;
-            if (this.lastPosition === null) {
-              firstTry = true;
-              this.lastPosition = new THREE.Vector3();
-              this.xzOrigin.object3D.getWorldPosition(this.lastPosition);
-              if (this.data.xzOrigin)
-                this.lastPosition.y -= this.xzOrigin.object3D.position.y;
-            }
-
-            const el = this.el;
-            if (this.objects.length === 0) return;
-
-            this.xzOrigin.object3D.getWorldPosition(nextPosition);
-            if (this.data.xzOrigin)
-              nextPosition.y -= this.xzOrigin.object3D.position.y;
-            if (nextPosition.distanceTo(this.lastPosition) <= 0.01) return;
-
-            let didHit = false;
-            // So that it does not get stuck it takes as few samples around the user and finds the most appropriate
-            scanPatternLoop: for (const [angle, distance] of scanPattern) {
-              tempVec.subVectors(nextPosition, this.lastPosition);
-              tempVec.applyAxisAngle(down, (angle * Math.PI) / 180);
-              tempVec.multiplyScalar(distance);
-              tempVec.add(this.lastPosition);
-              tempVec.y += maxYVelocity;
-              tempVec.y -= this.data.height;
-              raycaster.set(tempVec, down);
-              raycaster.far =
-                this.data.fall > 0 ? this.data.fall + maxYVelocity : Infinity;
-              raycaster.intersectObjects(this.objects, true, results);
-
-              if (results.length) {
-                // If it hit something we want to avoid then ignore it and stop looking
-                for (const result of results) {
-                  if (this.excludes.includes(result.object.el)) {
-                    results.splice(0);
-                    continue scanPatternLoop;
-                  }
-                }
-                const hitPos = results[0].point;
-                results.splice(0);
-                hitPos.y += this.data.height;
-                if (nextPosition.y - (hitPos.y - yVel * 2) > 0.01) {
-                  yVel += Math.max(gravity * delta * 0.001, -maxYVelocity);
-                  hitPos.y = nextPosition.y + yVel;
-                } else {
-                  yVel = 0;
-                }
-                tempVec.copy(hitPos);
-                this.xzOrigin.object3D.parent.worldToLocal(tempVec);
-                tempVec.sub(this.xzOrigin.object3D.position);
-                if (this.data.xzOrigin)
-                  tempVec.y += this.xzOrigin.object3D.position.y;
-                this.el.object3D.position.add(tempVec);
-
-                this.lastPosition.copy(hitPos);
-                didHit = true;
-                break;
-              }
-            }
-
-            if (didHit) {
-              firstTry = false;
-            }
-
-            if (!firstTry && !didHit) {
-              this.el.object3D.position.copy(this.lastPosition);
-              this.el.object3D.parent.worldToLocal(this.el.object3D.position);
-            }
-            ww;
-          };
-        })(),
       });
     </script>
 
@@ -457,8 +315,8 @@
             camera="active"
             persistent="true"
             networked-audio-source
-            networked="template:#avatar;attachTemplateToLocal:false;"
-            hover-username
+           
+           
           >
             <a-entity
               class="head"
@@ -598,13 +456,13 @@
       <a-entity
         id="videoPlayer"
         geometry="primitive: plane; width: 4; height: 2.25"
-        material="shader: flat; src: https://cdn.glitch.com/cb88aa99-1306-429f-9bd6-a868edd0dab9%2Flab%20test%20(1).mp4?v=1621091723902"
+        material="shader: flat; src: https://cdn.glitch.me/cb88aa99-1306-429f-9bd6-a868edd0dab9/2023-04-17_05-43-38.mp4?v=1681729414869; "
         position="10.27856 2.52717 -1.63301"
         rotation="0 -90.76167136887858 0"
       ></a-entity>
 
       <a-entity
-        youtube-browser="apiKey: YOUR_API_KEY; query: lilkeed"
+        youtube-browser="apiKey: YOUR_API_KEY; query: lilkeed;"
         geometry="primitive: plane; width: 4; height: 2.25"
         material="shader: flat"
         position="-10.27856 2.52717 -1.63301"
@@ -627,6 +485,22 @@
         type="audio/wav"
         loop="true"
       ></audio>
+
+      <a-entity avatar="model: #readyplayer"></a-entity>
+      <a-entity id="player">
+        <a-camera
+          id="head"
+          near="0.1"
+          wasd-controls="fly: true"
+          look-controls
+          networked-audio-source=""
+          rotation="0 90 0"
+          position="0 1.6 0"
+        ></a-camera>
+
+        <a-entity id="leftHand" tracked-controls="hand: left"></a-entity>
+        <a-entity id="rightHand" tracked-controls="hand: right"></a-entity>
+      </a-entity>
 
       <!-- experiment with raycasting interval; slight performance improvement but jittery appearance in world -->
 
@@ -692,14 +566,26 @@
 
       <!--      -->
       <a-entity
-        position="-8.63647 1.99045 -1.3845"
+        position="-3.63647 1.99045 -1.3845"
         rotation="0 90. 0"
-        geometry="primitive: plane; width: 10; height: 10"
+        geometry="primitive: plane; width: 5; height: 10"
         aframe-mirror="textureWidth: 1024; textureHeight: 1024; color: #7f7f7f"
+        visible="true"
       ></a-entity>
-      <!--
 
-      <a-entity avatar="modelName: #readyplayer" visible="true">
+      <a-text
+        eth-price-ticker
+        position="-2.83224 1.383999 -1.00145"
+        rotation="0 85.58442473207646 0"
+        text="width: 7; color: black; align: center; font: exo2bold; side: double"
+        scale="0.17839 0.14039 -1.01999"
+        value=""
+      >
+      </a-text>
+
+      <!-- 
+
+      <a-entity avatar="model: #readyplayer" visible="true">
         <a-entity id="player">
           <a-entity id="headOffset" position="0 0 0">
             <a-camera
@@ -707,6 +593,8 @@
               near="0.1"
               wasd-controls="fly: true"
               look-controls
+              networked-audio-source
+              networked="template:#avatar;attachTemplateToLocal:false;"
             ></a-camera>
           </a-entity>
           <a-entity
@@ -720,9 +608,13 @@
           ></a-entity>
         </a-entity>
       </a-entity>
-      <!-- living room -->
 
-      <a-entity avatar="model: #readyplayer"></a-entity>
+      <!-- living room 
+
+      <a-entity
+        avatar="model: #readyplayer"
+        networked="template:#avatar;attachTemplateToLocal:false;"
+      ></a-entity>
       <a-entity id="player">
         <a-camera
           id="head"
@@ -730,6 +622,7 @@
           wasd-controls=""
           look-controls
           networked-audio-source
+          networked="template:#avatar;attachTemplateToLocal:false;"
           rotation=""
           position="-1.75647 1.69045 -1.08563"
           navmesh-physics="#livingroom"
@@ -738,11 +631,15 @@
         <a-entity
           id="leftHand"
           tracked-controls="hand: left"
+          avatar-mover
+          thumb-controls
           move="true"
         ></a-entity>
         <a-entity
           id="rightHand"
           tracked-controls="hand: right"
+          avatar-mover
+          thumb-controls
           turn-type="snap"
         ></a-entity>
       </a-entity>
@@ -855,10 +752,10 @@
       --->
 
       <a-text
-        position="-0.61108 0.6063775 -11.00064"
+        position="-1 1.0126448 -11.0"
         text="width: 7; color: black; align: center; font: exo2bold; side: double"
         scale="1.69839 1.34039 5"
-        value=" "
+        value=""
       ></a-text>
 
       <a-text
@@ -871,7 +768,16 @@
       </a-text>
 
       <a-text
-        id="viewCount"
+        eth-price-ticker
+        position="-1 1.89999 -11.0"
+        text="width: 7; color: black; align: center; font: exo2bold; side: double"
+        scale="1.69839 1.34039 5"
+        value=""
+      >
+      </a-text>
+
+      <a-text
+        time-display=""
         position="-1 5.009999 -11.0"
         rotation="0 0 0"
         text="width: 4; color: white; align: center; font: exo2bold; side: double; value: 04/14/2023 02:45"

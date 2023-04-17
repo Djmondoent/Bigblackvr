@@ -13,8 +13,8 @@ let Reflector = function (mesh, renderer, options, cameraEl) {
     options.color !== undefined
       ? new THREE.Color(options.color)
       : new THREE.Color(0x7f7f7f);
-  var textureWidth = options.textureWidth || 512;
-  var textureHeight = options.textureHeight || 512;
+  var textureWidth = options.textureWidth || 12;
+  var textureHeight = options.textureHeight || 12;
   var clipBias = options.clipBias || 0;
   var shader = options.shader || Reflector.ReflectorShader;
 
@@ -272,8 +272,8 @@ Reflector.ReflectorShader = {
 
 AFRAME.registerComponent("aframe-mirror", {
   schema: {
-    textureWidth: { type: "int", default: 256 },
-    textureHeight: { type: "int", default: 256 },
+    textureWidth: { type: "int", default: 56 },
+    textureHeight: { type: "int", default: 56 },
     color: { type: "color", default: "#848485" },
     clipBias: { type: "number", default: 0.0 },
   },
