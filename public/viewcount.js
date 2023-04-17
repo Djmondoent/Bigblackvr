@@ -7,7 +7,7 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 public class ViewCounterServer {
-    private static int count = 3,398,310; // initialize to custom starting value
+    private static int count =  3000000; // initialize to custom starting value
     
     public static void main(String[] args) throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
